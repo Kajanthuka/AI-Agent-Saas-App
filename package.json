@@ -9,9 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@heroui/react": "^3.1.0",
     "@nextui-org/react": "^2.6.11",
     "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
     "next": "16.2.7",
     "react": "19.2.4",
     "react-dom": "19.2.4",
