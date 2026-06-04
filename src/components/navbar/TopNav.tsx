@@ -150,7 +150,7 @@ export default function TopNav() {
                         <DropdownItem
                             key="logout"
                             as={NextLink}
-                            href="/sign-in"
+                            href="/auth/login"
                             color="danger"
                             startContent={<LogOut size={22} />}
                             className="py-3 text-lg font-medium"
