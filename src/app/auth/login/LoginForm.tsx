@@ -21,7 +21,7 @@ export default function LoginForm() {
                         <GiPadlock size={30} />
                         <h1 className='text-2xl font-semibold'>Login</h1>
                     </div>
-                    <p className='text-neutral-500'>Welcome back TaskPilotAI! This is Ai Platform </p>
+                    <p className='text-neutral-500'>Welcome back This  TaskPilotAI! This is Ai Platform </p>
 
                 </div>
             </CardHeader>
