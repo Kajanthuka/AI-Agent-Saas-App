@@ -3,9 +3,16 @@
 import React from 'react'
 import { Card, CardHeader, CardBody, Input, Button } from '@nextui-org/react';
 import { GiPadlock } from 'react-icons/gi';
+import { useForm } from 'react-hook-form';
 
 
 export default function LoginForm() {
+    const { register, handleSubmit } = useForm();
+    const onSubmit = (data: any) => {
+        console.log(data);
+    }
+
+
     return (
         <Card className='mt-16 w-full max-w-md mx-auto'>
             <CardHeader className='flex flex-col items-center justify-center'>
@@ -19,16 +26,20 @@ export default function LoginForm() {
                 </div>
             </CardHeader>
             <CardBody>
-                <form actions=''>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='space-y-4'>
                         <Input
+                            defaultValue=''
                             label='Email'
                             variant='bordered'
+                            {...register('email')}
                         />
                         <Input
+                            defaultValue=''
                             label='Password'
                             type='password'
                             variant='bordered'
+                            {...register('password')}
                         />
                         <Button fullWidth
                             type="submit"
