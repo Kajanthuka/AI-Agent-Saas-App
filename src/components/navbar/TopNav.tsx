@@ -52,48 +52,50 @@ export default function TopNav() {
                 ]
             }}
         >
-            <NavbarMenuToggle
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                className="text-white sm:hidden"
-            />
-            <NavbarBrand as={NextLink} href='/'>
-                <Bot size={40} className='text-gray-300' />
-                <div className='font-medium text-2xl flex '>
-                    <span>Task-Pilot-</span>
-                    <span>AI</span>
-                </div>
-            </NavbarBrand>
+
+            <NavbarContent justify="start" className="gap-2">
+                <NavbarMenuToggle
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    className="text-white lg:hidden"
+                />
+
+                <NavbarBrand as={NextLink} href='/' className="gap-1">
+                    <Bot size={28} className='text-gray-300 sm:size-10' />
+                    <div className='font-medium text-sm sm:text-xl lg:text-2xl flex'>
+                        <span>Task-Pilot-</span>
+                        <span>AI</span>
+                    </div>
+                </NavbarBrand>
+            </NavbarContent>
             <NavbarContent className="hidden gap-8 lg:flex" justify="end" >
                 <NavbarItem as={NextLink} href='/members' className="text-lg font-medium justify-end ">  Welcome Back 👋</NavbarItem>
             </NavbarContent>
 
+
             <NavbarContent justify="end" className="gap-2" >
-                <Input
-                    aria-label="Search"
-                    className="w-[240px]"
-                    isClearable
-                    name="search"
-                    onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                            handleSearch();
-                        }
-                    }}
-                    onValueChange={setSearch}
-                    placeholder="Search..."
-                    startContent={<SearchIcon className="h-4 w-4 text-default-500" />}
-                    type="search"
-                    value={search}
-                />
+                <div className="hidden md:flex items-center gap-2">
+                    <Input
+                        aria-label="Search"
+                        className="w-[180px] lg:w-[240px]"
+                        isClearable
+                        name="search"
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                                handleSearch();
+                            }
+                        }}
+                        onValueChange={setSearch}
+                        placeholder="Search..."
+                        startContent={<SearchIcon className="h-4 w-4 text-default-500" />}
+                        type="search"
+                        value={search}
+                    />
+                </div>
 
                 <div className="hidden md:flex items-center gap-2">
-                    {/* your Input */}
-                    {/* your Search Button */}
-                    {/* your Notification Button */}
                     <Button isIconOnly variant="light" aria-label="search" onPress={handleSearch}>
                         <Search size={20} className="text-gray-300" />
                     </Button>
-
-
                     <Button isIconOnly variant="light" aria-label="Notifications">
                         <Bell size={20} className="text-gray-300" />
                     </Button>
