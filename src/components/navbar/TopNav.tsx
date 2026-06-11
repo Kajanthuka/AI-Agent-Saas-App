@@ -1,12 +1,8 @@
 "use client"
 
-// import {
-//     Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Dropdown, DropdownTrigger, Avatar,
-//     DropdownMenu, DropdownItem
-// } from '@nextui-org/react'
 import {
     Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Dropdown, DropdownTrigger, Avatar,
-    DropdownMenu, DropdownItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle
+    DropdownMenu, DropdownItem, NavbarMenuToggle
 } from '@nextui-org/react'
 import React from 'react'
 import { Button, Divider } from '@nextui-org/react';
@@ -23,7 +19,6 @@ import { useRouter } from "next/navigation";
 
 export default function TopNav() {
     const router = useRouter();
-    // const [search, setSearch] = useState("");
     const [search, setSearch] = useState("");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -100,7 +95,6 @@ export default function TopNav() {
                         <Bell size={20} className="text-gray-300" />
                     </Button>
                 </div>
-
 
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
@@ -182,10 +176,6 @@ export default function TopNav() {
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>
-            {/* <NavbarContent justify='end'>
-                <Button as={Link} href='/login' variant="borderd" className='text-white'>Sign In</Button>
-                <Button as={Link} href='/register' variant="borderd" className='text-white'>Sign Up</Button>
-            </NavbarContent> */}
         </Navbar>
     )
 }
