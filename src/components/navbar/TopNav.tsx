@@ -1,8 +1,12 @@
 "use client"
 
+// import {
+//     Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Dropdown, DropdownTrigger, Avatar,
+//     DropdownMenu, DropdownItem
+// } from '@nextui-org/react'
 import {
     Navbar, NavbarBrand, NavbarContent, NavbarItem, Input, Dropdown, DropdownTrigger, Avatar,
-    DropdownMenu, DropdownItem
+    DropdownMenu, DropdownItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle
 } from '@nextui-org/react'
 import React from 'react'
 import { Button, Divider } from '@nextui-org/react';
@@ -19,7 +23,9 @@ import { useRouter } from "next/navigation";
 
 export default function TopNav() {
     const router = useRouter();
+    // const [search, setSearch] = useState("");
     const [search, setSearch] = useState("");
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     function handleSearch() {
         const query = search.trim();
@@ -34,6 +40,8 @@ export default function TopNav() {
     return (
         <Navbar
             maxWidth='xl'
+            isMenuOpen={isMenuOpen}
+            onMenuOpenChange={setIsMenuOpen}
             className='bg-linear-to-b bg-emerald-900 text-white'
             classNames={{
                 item: [
@@ -44,6 +52,10 @@ export default function TopNav() {
                 ]
             }}
         >
+            <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className="text-white sm:hidden"
+            />
             <NavbarBrand as={NextLink} href='/'>
                 <Bot size={40} className='text-gray-300' />
                 <div className='font-medium text-2xl flex '>
@@ -51,10 +63,11 @@ export default function TopNav() {
                     <span>AI</span>
                 </div>
             </NavbarBrand>
-            <NavbarContent className="hidden gap-8 sm:flex" justify="end" >
+            <NavbarContent className="hidden gap-8 lg:flex" justify="end" >
                 <NavbarItem as={NextLink} href='/members' className="text-lg font-medium justify-end ">  Welcome Back 👋</NavbarItem>
             </NavbarContent>
-            <NavbarContent justify="end gap-2" >
+
+            <NavbarContent justify="end" className="gap-2" >
                 <Input
                     aria-label="Search"
                     className="w-[240px]"
@@ -72,14 +85,20 @@ export default function TopNav() {
                     value={search}
                 />
 
-                <Button isIconOnly variant="light" aria-label="search" onPress={handleSearch}>
-                    <Search size={20} className="text-gray-300" />
-                </Button>
+                <div className="hidden md:flex items-center gap-2">
+                    {/* your Input */}
+                    {/* your Search Button */}
+                    {/* your Notification Button */}
+                    <Button isIconOnly variant="light" aria-label="search" onPress={handleSearch}>
+                        <Search size={20} className="text-gray-300" />
+                    </Button>
 
 
-                <Button isIconOnly variant="light" aria-label="Notifications">
-                    <Bell size={20} className="text-gray-300" />
-                </Button>
+                    <Button isIconOnly variant="light" aria-label="Notifications">
+                        <Bell size={20} className="text-gray-300" />
+                    </Button>
+                </div>
+
 
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
