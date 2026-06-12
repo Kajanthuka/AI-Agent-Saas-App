@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import TopNav from "@/components/navbar/TopNav";
+import SideNav from "@/components/navbar/SideNav";
 
 export const metadata: Metadata = {
   title: "My AI Agent Saas Application",
@@ -17,12 +18,19 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <Providers>
-          <TopNav />
-          <main className="container mx-auto"></main>
-          {children}
+          <div className="min-h-screen bg-gray-50">
+            <TopNav />
+
+            <div className="flex pt-0">
+              <SideNav />
+              <main className="min-w-0 flex-1 p-6" >
+                {children}
+              </main>
+            </div>
+          </div>
         </Providers>
 
       </body>
-    </html>
+    </html >
   );
 }
