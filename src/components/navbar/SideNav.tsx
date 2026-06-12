@@ -13,7 +13,7 @@ import {
 
 const navItems = [
     { label: "Dashboard", href: "/", icon: LayoutDashboard },
-    { label: "Emails", href: "/emails", icon: Inbox },
+    { label: "Emails", href: "/email", icon: Inbox },
     { label: "Tasks", href: "/tasks", icon: ListChecks },
     { label: "AI Replies", href: "/replies", icon: Bot },
     { label: "Settings", href: "/settings", icon: Settings },
