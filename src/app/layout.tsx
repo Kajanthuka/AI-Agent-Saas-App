@@ -3,6 +3,7 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import TopNav from "@/components/navbar/TopNav";
 import SideNav from "@/components/navbar/SideNav";
+import Footer from "@/components/footer/Footer";
 
 export const metadata: Metadata = {
   title: "My AI Agent Saas Application",
@@ -26,8 +27,11 @@ export default function RootLayout({
               <main className="min-w-0 flex-1 p-6" >
                 {children}
               </main>
+
             </div>
+
           </div>
+          <Footer />
         </Providers>
 
       </body>
