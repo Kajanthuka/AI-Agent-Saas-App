@@ -1,8 +1,96 @@
-'use client'
+// 'use client'
 
-import React from 'react'
-import Link from 'next/link';
+// import React from 'react'
+// import Link from 'next/link';
+// import { usePathname } from "next/navigation";
+// import { useEffect, useState } from "react";
+
+// import {
+//     Bot,
+//     Inbox,
+//     LayoutDashboard,
+//     ListChecks,
+//     Settings,
+// } from "lucide-react";
+
+// const navItems = [
+//     { label: "Dashboard", href: "/", icon: LayoutDashboard },
+//     { label: "Emails", href: "/email", icon: Inbox },
+//     { label: "Tasks", href: "/tasks", icon: ListChecks },
+//     { label: "AI Replies", href: "/replies", icon: Bot },
+//     { label: "Settings", href: "/settings", icon: Settings },
+// ];
+
+// export default function SideNav() {
+//     const pathname = usePathname();
+//     const [isOpen, setIsOpen] = useState(false);
+
+
+
+//     useEffect(() => {
+//         function handleEscape(event: KeyboardEvent) {
+//             if (event.key === "Escape") {
+//                 setIsOpen(false);
+//             }
+//         }
+
+//         window.addEventListener("keydown", handleEscape);
+//         return () => window.removeEventListener("keydown", handleEscape);
+//     }, []);
+
+//     return (
+
+//         <div className="min-h-0 bg-gray-50 px-2 py-1 lg:px-1">
+//             <aside className=" top-0 mx-1 mb-0 flex min-h-[calc(100vh-8rem)] w-[200px] shrink-0 flex-col rounded-2xl   bg-linear-to-b bg-emerald-800  px-2 py-1 text-slate-300 shadow-sm">
+//                 <nav className="mt-1 space-y-6">
+//                     {navItems.map((item) => {
+//                         const Icon = item.icon;
+//                         const isActive = pathname === item.href;
+
+//                         return (
+
+//                             <Link
+//                                 key={item.href}
+//                                 href={item.href}
+//                                 className=
+
+//                                 {`flex h-10 items-center gap-5 rounded-2xl px-6 text transition ${isActive
+//                                     ? "text-white text-lg font-medium variant-light shadow-lg shadow-indigo-950/40"
+//                                     : "text-white text-lg font-medium hover:bg-gray-200/50 hover:text-gray-300"
+//                                     }`}
+
+//                                 onClick={() => setIsOpen(false)}
+//                             >
+//                                 <Icon size={20} />
+//                                 <span>{item.label}</span>
+//                             </Link>
+
+
+//                         );
+
+//                     })}
+//                 </nav >
+//                 <button
+//                     aria-label="Close side navigation"
+//                     className="flex h-10 w-10 items-center justify-center rounded-xl text-2xl text-slate-500 lg:hidden"
+//                     onClick={() => setIsOpen(false)}
+//                     type="button"
+//                 >
+//                     x
+//                 </button>
+//             </aside>
+
+//         </div >
+
+//     )
+
+// }
+"use client";
+
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import {
     Bot,
     Inbox,
@@ -21,10 +109,60 @@ const navItems = [
 
 export default function SideNav() {
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        function handleEscape(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                setIsOpen(false);
+            }
+        }
+
+        window.addEventListener("keydown", handleEscape);
+
+        return () => {
+            window.removeEventListener("keydown", handleEscape);
+        };
+    }, []);
+
     return (
-        <div className="min-h-0 bg-gray-50 px-2 py-1 lg:px-1">
-            <aside className=" top-0 mx-1 mb-0 flex min-h-[calc(100vh-8rem)] w-[200px] shrink-0 flex-col rounded-2xl   bg-linear-to-b bg-emerald-800  px-2 py-1 text-slate-300 shadow-sm">
-                <nav className="mt-1 space-y-6">
+        <>
+            <button
+                aria-expanded={isOpen}
+                aria-label="Open side navigation"
+                className="fixed left-4 top-29 z-[60] flex h-11 w-11 flex-col items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white shadow-lg lg:hidden"
+                onClick={() => setIsOpen(true)}
+                type="button"
+            >
+                <span className="h-0.5 w-5 rounded-full bg-slate-950" />
+                <span className="h-0.5 w-5 rounded-full bg-slate-950" />
+                <span className="h-0.5 w-5 rounded-full bg-slate-950" />
+            </button>
+
+            <div
+                className={`fixed inset-0 z-[55] bg-slate-950/35 backdrop-blur-sm transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+                    }`}
+                onClick={() => setIsOpen(false)}
+            />
+
+            <aside
+                className={`fixed left-0 top-0 z-[60] flex min-h-screen w-[240px] shrink-0 flex-col bg-gradient-to-b from-emerald-800 to-emerald-900  px-3 py-4 text-slate-300 shadow-xl transition-transform duration-300 lg:static lg:min-h-[calc(100vh-8rem)] lg:w-[200px] lg:translate-x-0 lg:rounded-2xl ${isOpen ? "translate-x-0" : "-translate-x-full"
+                    }`}
+            >
+                <div className="mb-6 flex items-center justify-between">
+                    <span className="text-lg font-semibold text-white">Menu</span>
+
+                    <button
+                        aria-label="Close side navigation"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl text-2xl text-white lg:hidden"
+                        onClick={() => setIsOpen(false)}
+                        type="button"
+                    >
+                        x
+                    </button>
+                </div>
+
+                <nav className="mt-1 space-y-3">
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname === item.href;
@@ -33,10 +171,11 @@ export default function SideNav() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex h-10 items-center gap-5 rounded-2xl px-6 text transition ${isActive
-                                    ? "text-gray-100 variant-light shadow-lg shadow-indigo-950/40"
-                                    : "text-white text-lg hover:bg-gray-200/50 hover:text-gray-300"
+                                className={`flex h-10 items-center gap-5 rounded-2xl px-4 text-lg font-medium transition ${isActive
+                                    ? "bg-white/15 text-white shadow-lg shadow-indigo-950/40"
+                                    : "text-white hover:bg-gray-200/20 hover:text-gray-200"
                                     }`}
+                                onClick={() => setIsOpen(false)}
                             >
                                 <Icon size={20} />
                                 <span>{item.label}</span>
@@ -45,9 +184,6 @@ export default function SideNav() {
                     })}
                 </nav>
             </aside>
-        </div >
-
-    )
-
-
+        </>
+    );
 }
