@@ -80,9 +80,6 @@ export default function DashboardPage() {
         urgent: emails.filter((email) => email.urgency === "High").length,
     };
 
-    // function copyReply(text: string) {
-    //     navigator.clipboard.writeText(text);
-    // }
 
     async function copyReply(text: string) {
         if (navigator.clipboard && window.isSecureContext) {
@@ -257,25 +254,6 @@ function DashboardCard({ title, value, icon: Icon }: DashboardCardProps) {
     );
 }
 
-// type DashboardPanelProps = {
-//     title: string;
-//     icon: ElementType;
-//     children: React.ReactNode;
-// };
-
-// function DashboardPanel({ title, icon: Icon, children }: DashboardPanelProps) {
-//     return (
-//         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-//             <div className="mb-4 flex items-center justify-between">
-//                 <h2 className="text-lg font-semibold text-slate-950">{title}</h2>
-//                 <Icon size={22} className="text-emerald-700" />
-//             </div>
-
-//             {children}
-//         </div>
-//     );
-// }
-
 type DashboardPanelProps = {
     title: string;
     href: string;
@@ -298,9 +276,16 @@ function DashboardPanel({
                 <div className="flex items-center gap-3">
                     <Icon size={22} className="text-emerald-700" />
 
-                    <Link
+                    {/* <Link
                         href={href}
                         className="text-sm font-medium text-emerald-700 hover:text-emerald-900"
+                    >
+                        View all
+                    </Link> */}
+
+                    <Link
+                        href={href}
+                        className="inline-flex h-9 items-center justify-center rounded-lg bg-emerald-700 px-4 text-sm font-medium text-white transition hover:bg-emerald-800"
                     >
                         View all
                     </Link>
