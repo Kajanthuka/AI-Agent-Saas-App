@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 const navItems = [
-    { label: "Dashboard", href: "/", icon: LayoutDashboard },
+    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Emails", href: "/email", icon: Inbox },
     { label: "Tasks", href: "/tasks", icon: ListChecks },
     { label: "AI Replies", href: "/replies", icon: Bot },
@@ -53,13 +53,13 @@ export default function SideNav() {
             </button>
 
             <div
-                className={`fixed inset-0 z-[55] bg-slate-950/35 backdrop-blur-sm transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+                className={`fixed inset-0 z-[55] bg-slate-950/35 backdrop-blur-sm transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0 "
                     }`}
                 onClick={() => setIsOpen(false)}
             />
 
             <aside
-                className={`fixed left-0 top-0 z-[60] flex min-h-screen w-[240px] shrink-0 flex-col bg-gradient-to-b from-emerald-800 to-emerald-900  px-3 py-4 text-slate-300 shadow-xl transition-transform duration-300 lg:static lg:min-h-[calc(100vh-8rem)] lg:w-[200px] lg:translate-x-0 lg:rounded-2xl ${isOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed left-0 top-0 z-[70] flex h-dvh w-[260px] flex-col bg-gradient-to-b from-emerald-800 to-emerald-900 px-3 py-4 text-white shadow-2xl transition-transform duration-300 lg:static lg:z-auto lg:h-[calc(100vh-5rem)] lg:w-[200px] lg:translate-x-0 lg:rounded-2xl lg:shadow-sm ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
                 <div className="mb-6 flex items-center justify-between">
