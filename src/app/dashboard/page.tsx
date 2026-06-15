@@ -125,7 +125,7 @@ export default function DashboardPage() {
             <div className="mx-auto max-w-7xl space-y-6">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900">
-                        Track your emails, urgent messages,  AI generated tasks and replies.
+                        Track your Emails, Urgent Messages,  AI generated Tasks and Replies.
                     </h1>
                 </div>
 
@@ -275,13 +275,6 @@ function DashboardPanel({
 
                 <div className="flex items-center gap-3">
                     <Icon size={22} className="text-emerald-700" />
-
-                    {/* <Link
-                        href={href}
-                        className="text-sm font-medium text-emerald-700 hover:text-emerald-900"
-                    >
-                        View all
-                    </Link> */}
 
                     <Link
                         href={href}
