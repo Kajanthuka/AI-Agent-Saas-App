@@ -9,7 +9,7 @@ import { Button, Divider } from '@nextui-org/react';
 import NextLink from "next/link";
 import { Bot } from "lucide-react";
 import {
-    Settings, Shield,
+    SlidersHorizontal, Shield,
     MessageCircle,
     LogOut, Bell, User, Search
 } from "lucide-react";
@@ -123,7 +123,7 @@ export default function TopNav() {
                                 key="preferences"
                                 as={NextLink}
                                 href="/preferences"
-                                startContent={<Settings size={22} className="text-gray-500" />}
+                                startContent={<SlidersHorizontal size={22} className="text-gray-500" />}
                                 className="py-3 text-lg font-medium"
                             >
                                 Preferences
