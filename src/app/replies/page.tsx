@@ -9,46 +9,72 @@
 "use client";
 
 import { Bot, CheckCircle2, Copy, RefreshCw, Send } from "lucide-react";
-import { useState } from "react";
+// import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const initialReplies = [
-    {
-        id: 1,
-        title: "Reply to Sarah Johnson",
-        recipient: "Sarah Johnson",
-        source: "Client onboarding call needs confirmation",
-        preview:
-            "Hi Sarah, yes, we are confirmed for today. I will send over the meeting link shortly.",
-        status: "Draft",
-    },
-    {
-        id: 2,
-        title: "Reply to Michael Chen",
-        recipient: "Michael Chen",
-        source: "Invoice question",
-        preview:
-            "Hi Michael, thanks for flagging this. I will review the invoice and get back to you with an update.",
-        status: "Draft",
-    },
-    {
-        id: 3,
-        title: "Reply to Emma Wilson",
-        recipient: "Emma Wilson",
-        source: "Weekly update",
-        preview:
-            "Hi Emma, thanks for the weekly update. I will review the details and follow up if anything needs action.",
-        status: "Draft",
-    },
-];
+// const initialReplies = [
+//     {
+//         id: 1,
+//         title: "Reply to Sarah Johnson",
+//         recipient: "Sarah Johnson",
+//         source: "Client onboarding call needs confirmation",
+//         preview:
+//             "Hi Sarah, yes, we are confirmed for today. I will send over the meeting link shortly.",
+//         status: "Draft",
+//     },
+//     {
+//         id: 2,
+//         title: "Reply to Michael Chen",
+//         recipient: "Michael Chen",
+//         source: "Invoice question",
+//         preview:
+//             "Hi Michael, thanks for flagging this. I will review the invoice and get back to you with an update.",
+//         status: "Draft",
+//     },
+//     {
+//         id: 3,
+//         title: "Reply to Emma Wilson",
+//         recipient: "Emma Wilson",
+//         source: "Weekly update",
+//         preview:
+//             "Hi Emma, thanks for the weekly update. I will review the details and follow up if anything needs action.",
+//         status: "Draft",
+//     },
+// ];
 
-const regeneratedReplies = [
-    "Thanks for reaching out. I will review this and get back to you shortly with the next steps.",
-    "Hi, I appreciate the update. I will check the details and follow up as soon as possible.",
-    "Thanks for your message. I will handle this today and send you an update once complete.",
-];
+// const regeneratedReplies = [
+//     "Thanks for reaching out. I will review this and get back to you shortly with the next steps.",
+//     "Hi, I appreciate the update. I will check the details and follow up as soon as possible.",
+//     "Thanks for your message. I will handle this today and send you an update once complete.",
+// ];
+type Reply = {
+    id: number;
+    title: string;
+    recipient: string;
+    source: string;
+    preview: string;
+    status: "Draft" | "Ready" | "Sent";
+};
+
 
 export default function RepliesPage() {
-    const [replies, setReplies] = useState(initialReplies);
+    // const [replies, setReplies] = useState(initialReplies);
+
+
+    const [replies, setReplies] = useState<Reply[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadReplies() {
+            const response = await fetch("/api/replies");
+            const data = await response.json();
+
+            setReplies(data);
+            setIsLoading(false);
+        }
+
+        loadReplies();
+    }, []);
 
     async function copyReply(text: string) {
         if (navigator.clipboard && window.isSecureContext) {
@@ -91,22 +117,49 @@ export default function RepliesPage() {
         );
     }
 
-    function markAsReady(id: number) {
+    // function markAsReady(id: number) {
+    //     setReplies((currentReplies) =>
+    //         currentReplies.map((reply) =>
+    //             reply.id === id ? { ...reply, status: "Ready" } : reply
+    //         )
+    //     );
+    // }
+
+    // function markAsSent(id: number) {
+    //     setReplies((currentReplies) =>
+    //         currentReplies.map((reply) =>
+    //             reply.id === id ? { ...reply, status: "Sent" } : reply
+    //         )
+    //     );
+    // }
+
+    async function updateReplyStatus(id: number, status: "Draft" | "Ready" | "Sent") {
+        const response = await fetch(`/api/replies/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status }),
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
         setReplies((currentReplies) =>
             currentReplies.map((reply) =>
-                reply.id === id ? { ...reply, status: "Ready" } : reply
+                reply.id === id ? { ...reply, status } : reply
             )
         );
     }
 
-    function markAsSent(id: number) {
-        setReplies((currentReplies) =>
-            currentReplies.map((reply) =>
-                reply.id === id ? { ...reply, status: "Sent" } : reply
-            )
+    if (isLoading) {
+        return (
+            <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
+                <p className="text-sm text-slate-500">Loading replies...</p>
+            </main>
         );
     }
-
     return (
         <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
             <div className="mx-auto max-w-7xl space-y-6">
@@ -185,10 +238,11 @@ export default function RepliesPage() {
 
                                     <button
                                         type="button"
-                                        onClick={() => markAsReady(reply.id)}
+                                        onClick={() => updateReplyStatus(reply.id, "Ready")}
+                                        // onClick={() => markAsReady(reply.id)}
                                         className={`inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium transition ${reply.status === "Ready"
-                                                ? "bg-emerald-700 text-white"
-                                                : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                            ? "bg-emerald-700 text-white"
+                                            : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                                             }`}
                                     >
                                         <CheckCircle2 size={16} />
@@ -197,15 +251,30 @@ export default function RepliesPage() {
 
                                     <button
                                         type="button"
-                                        onClick={() => markAsSent(reply.id)}
+                                        onClick={() => updateReplyStatus(reply.id, "Sent")}
+
                                         className={`inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium transition ${reply.status === "Sent"
-                                                ? "bg-emerald-700 text-white"
-                                                : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                            ? "bg-emerald-700 text-white"
+                                            : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                                             }`}
                                     >
                                         <Send size={16} />
                                         Sent
                                     </button>
+
+                                    {/* <button
+                                        type="button"
+                                        onClick={() => updateReplyStatus(reply.id, "Ready")}
+                                    >
+                                        Ready
+                                    </button> */}
+
+                                    {/* <button
+                                        type="button"
+                                        onClick={() => updateReplyStatus(reply.id, "Sent")}
+                                    >
+                                        Sent
+                                    </button> */}
                                 </div>
                             </article>
                         ))}

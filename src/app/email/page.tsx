@@ -1,39 +1,104 @@
 "use client";
 
 import { Inbox, MailCheck, MailQuestion, MailWarning } from "lucide-react";
-import { useState } from "react";
+// import { useState } from "react";
+import { useEffect, useState } from "react";
+type Email = {
+    id: number;
+    from: string;
+    subject: string;
+    preview: string;
+    urgency: string;
+    status: "Reviewed" | "Not checked";
+};
 
-const initialEmails = [
-    {
-        id: 1,
-        from: "Sarah Johnson",
-        subject: "Client onboarding call needs confirmation",
-        preview: "Can you confirm if we are still good for the onboarding call today?",
-        urgency: "High",
-        status: "Not checked",
-    },
-    {
-        id: 2,
-        from: "Michael Chen",
-        subject: "Invoice question",
-        preview: "I noticed a difference in the latest invoice total. Could you check it?",
-        urgency: "Medium",
-        status: "Not checked",
-    },
-    {
-        id: 3,
-        from: "Emma Wilson",
-        subject: "Weekly update",
-        preview: "Here is the weekly progress update for the automation project.",
-        urgency: "Low",
-        status: "Not checked",
-    },
-];
+
+
+// const initialEmails = [
+//     {
+//         id: 1,
+//         from: "Sarah Johnson",
+//         subject: "Client onboarding call needs confirmation",
+//         preview: "Can you confirm if we are still good for the onboarding call today?",
+//         urgency: "High",
+//         status: "Not checked",
+//     },
+//     {
+//         id: 2,
+//         from: "Michael Chen",
+//         subject: "Invoice question",
+//         preview: "I noticed a difference in the latest invoice total. Could you check it?",
+//         urgency: "Medium",
+//         status: "Not checked",
+//     },
+//     {
+//         id: 3,
+//         from: "Emma Wilson",
+//         subject: "Weekly update",
+//         preview: "Here is the weekly progress update for the automation project.",
+//         urgency: "Low",
+//         status: "Not checked",
+//     },
+// ];
+
+
+
 
 export default function EmailPage() {
-    const [emails, setEmails] = useState(initialEmails);
+    // const [emails, setEmails] = useState(initialEmails);
+
+    const [emails, setEmails] = useState<Email[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadEmails() {
+            const response = await fetch("/api/emails");
+            const data = await response.json();
+
+            setEmails(data);
+            setIsLoading(false);
+        }
+
+        loadEmails();
+    }, []);
 
     function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
+        setEmails((currentEmails) =>
+            currentEmails.map((email) =>
+                email.id === id ? { ...email, status } : email
+            )
+        );
+    }
+
+    if (isLoading) {
+        return (
+            <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
+                <p className="text-sm text-slate-500">Loading emails...</p>
+            </main>
+        );
+    }
+
+    // function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
+    //     setEmails((currentEmails) =>
+    //         currentEmails.map((email) =>
+    //             email.id === id ? { ...email, status } : email
+    //         )
+    //     );
+    // }
+
+    async function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
+        const response = await fetch(`/api/emails/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status }),
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
         setEmails((currentEmails) =>
             currentEmails.map((email) =>
                 email.id === id ? { ...email, status } : email
