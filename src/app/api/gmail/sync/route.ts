@@ -70,10 +70,16 @@ export async function POST() {
         auth: oauth2Client,
     });
 
+    // const listResponse = await gmail.users.messages.list({
+    //     userId: "me",
+    //     maxResults: 10,
+    //     q: "in:inbox",
+    // });
+
     const listResponse = await gmail.users.messages.list({
         userId: "me",
-        maxResults: 10,
-        q: "in:inbox",
+        maxResults: 20,
+        q: "in:inbox newer_than:1d",
     });
 
     const messages = listResponse.data.messages ?? [];
