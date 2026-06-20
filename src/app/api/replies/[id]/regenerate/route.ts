@@ -95,7 +95,8 @@
 
 import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
-import { openai } from "@/lib/openai";
+// import { openai } from "@/lib/openai";
+import { gemini } from "@/lib/gemini";
 
 type RouteParams = {
     params: Promise<{
@@ -131,30 +132,52 @@ export async function POST(_request: Request, { params }: RouteParams) {
     const email = replyResult.rows[0];
 
     try {
-        const completion = await openai.chat.completions.create({
-            model: "gpt-4.1-mini",
-            messages: [
-                {
-                    role: "system",
-                    content:
-                        "You write professional email replies. Keep replies clear, polite, useful, and concise. Do not invent details.",
-                },
-                {
-                    role: "user",
-                    content: `Write a reply to this email.
+        //         const completion = await openai.chat.completions.create({
+        //             model: "gpt-4.1-mini",
+        //             messages: [
+        //                 {
+        //                     role: "system",
+        //                     content:
+        //                         "You write professional email replies. Keep replies clear, polite, useful, and concise. Do not invent details.",
+        //                 },
+        //                 {
+        //                     role: "user",
+        //                     content: `Write a reply to this email.
+
+        // Sender: ${email.sender}
+        // Subject: ${email.subject}
+        // Email message:
+        // ${email.message}
+
+        // Return only the reply text.`,
+        //                 },
+        //             ],
+        //         });
+
+
+        //         const newPreview =
+        //             completion.choices[0]?.message?.content?.trim() ??
+        //             "Thanks for your message. I will review this and get back to you shortly.";
+
+        const response = await gemini.models.generateContent({
+            model: "gemini-3.5-flash",
+            contents: `You write professional email replies.
+
+Rules:
+- Keep it polite, clear, useful, and concise.
+- Do not invent details.
+- Return only the reply text.
+
+Write a reply to this email:
 
 Sender: ${email.sender}
 Subject: ${email.subject}
 Email message:
-${email.message}
-
-Return only the reply text.`,
-                },
-            ],
+${email.message}`,
         });
 
         const newPreview =
-            completion.choices[0]?.message?.content?.trim() ??
+            response.text?.trim() ??
             "Thanks for your message. I will review this and get back to you shortly.";
 
         const updatedReply = await pool.query(
@@ -183,11 +206,22 @@ Return only the reply text.`,
         //     { status: 500 }
         // );
 
-        console.error("OpenAI regenerate error:", error);
+        // console.error("OpenAI regenerate error:", error);
+
+        // return NextResponse.json(
+        //     {
+        //         error: "Failed to generate AI reply",
+        //         details: error instanceof Error ? error.message : "Unknown error",
+        //     },
+        //     { status: 500 }
+        // );
+
+
+        console.error("Gemini regenerate error:", error);
 
         return NextResponse.json(
             {
-                error: "Failed to generate AI reply",
+                error: "Failed to generate AI reply with Gemini.",
                 details: error instanceof Error ? error.message : "Unknown error",
             },
             { status: 500 }

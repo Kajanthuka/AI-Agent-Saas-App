@@ -96,24 +96,44 @@ export default function RepliesPage() {
         document.body.removeChild(textArea);
     }
 
-    function regenerateReply(id: number) {
+    // function regenerateReply(id: number) {
+    //     setReplies((currentReplies) =>
+    //         currentReplies.map((reply) => {
+    //             if (reply.id !== id) {
+    //                 return reply;
+    //             }
+
+    //             const randomReply =
+    //                 regeneratedReplies[
+    //                 Math.floor(Math.random() * regeneratedReplies.length)
+    //                 ];
+
+    //             return {
+    //                 ...reply,
+    //                 preview: randomReply,
+    //                 status: "Draft",
+    //             };
+    //         })
+    //     );
+    // }
+
+    async function regenerateReply(id: number) {
+        const response = await fetch(`/api/replies/${id}/regenerate`, {
+            method: "POST",
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            alert(error.error ?? "Failed to regenerate reply");
+            return;
+        }
+
+        const updatedReply = await response.json();
+
         setReplies((currentReplies) =>
-            currentReplies.map((reply) => {
-                if (reply.id !== id) {
-                    return reply;
-                }
-
-                const randomReply =
-                    regeneratedReplies[
-                    Math.floor(Math.random() * regeneratedReplies.length)
-                    ];
-
-                return {
-                    ...reply,
-                    preview: randomReply,
-                    status: "Draft",
-                };
-            })
+            currentReplies.map((reply) =>
+                reply.id === id ? { ...reply, ...updatedReply, id: reply.id } : reply
+            )
         );
     }
 
