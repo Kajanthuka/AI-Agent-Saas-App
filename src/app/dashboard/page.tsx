@@ -483,7 +483,14 @@ export default function DashboardPage() {
                 </section>
 
                 <section className="space-y-6">
+                    <a
+                        href="/api/auth/google"
+                        className="inline-flex h-10 items-center justify-center rounded-lg bg-emerald-700 px-4 text-sm font-medium text-white"
+                    >
+                        Connect Gmail
+                    </a>
                     <DashboardPanel title="Emails" icon={Inbox} href="/email">
+
                         <div className="space-y-3">
                             {emails.map((email, index) => (
                                 <div
