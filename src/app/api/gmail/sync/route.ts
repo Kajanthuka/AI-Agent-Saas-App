@@ -80,6 +80,7 @@ export async function POST() {
         userId: "me",
         maxResults: 20,
         q: "in:inbox newer_than:1d",
+        // q: "in:inbox"
     });
 
     const messages = listResponse.data.messages ?? [];
@@ -104,14 +105,28 @@ export async function POST() {
         const messageBody = getMessageBody(payload) || messageResponse.data.snippet || "";
         const urgency = detectUrgency(`${subject} ${messageBody}`);
 
+        //     const existing = await pool.query(
+        //         `
+        //   SELECT id
+        //   FROM emails
+        //   WHERE subject = $1 AND sender = $2
+        //   LIMIT 1
+        //   `,
+        //         [subject, sender]
+        //     );
+
+        //     if (existing.rows.length > 0) {
+        //         continue;
+        //     }
+
         const existing = await pool.query(
             `
-      SELECT id
-      FROM emails
-      WHERE subject = $1 AND sender = $2
-      LIMIT 1
-      `,
-            [subject, sender]
+             SELECT id
+            FROM emails
+             WHERE gmail_message_id = $1
+            LIMIT 1
+            `,
+            [message.id]
         );
 
         if (existing.rows.length > 0) {
@@ -123,15 +138,46 @@ export async function POST() {
         try {
             await client.query("BEGIN");
 
+
+            const receivedAt = messageResponse.data.internalDate
+                ? new Date(Number(messageResponse.data.internalDate))
+                : new Date();
+
+
+            //     const emailResult = await client.query(
+            //         `
+            // INSERT INTO emails (sender, subject, message, urgency, status)
+            // VALUES ($1, $2, $3, $4, $5)
+            // RETURNING *
+            // `,
+            //         [sender, subject, messageBody, urgency, "Not checked"]
+            //     );
+
             const emailResult = await client.query(
                 `
-        INSERT INTO emails (sender, subject, message, urgency, status)
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING *
-        `,
-                [sender, subject, messageBody, urgency, "Not checked"]
+  INSERT INTO emails (
+    gmail_message_id,
+    sender,
+    subject,
+    message,
+    urgency,
+    status,
+    received_at,
+    synced_at
+  )
+  VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+  RETURNING *
+  `,
+                [
+                    message.id,
+                    sender,
+                    subject,
+                    messageBody,
+                    urgency,
+                    "Not checked",
+                    receivedAt,
+                ]
             );
-
             const email = emailResult.rows[0];
 
             const replyText = generateSuggestedReply({

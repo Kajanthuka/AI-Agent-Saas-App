@@ -58,7 +58,7 @@ export async function POST(request: Request) {
         const replyResult = await client.query(
             `
       INSERT INTO ai_replies (email_id, title, recipient, source, preview, status)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      VALUES ($1, $2, $3, $4, $5, $6) ORDER BY received_at DESC NULLS LAST, created_at DESC
       RETURNING *
       `,
             [
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
         const taskResult = await client.query(
             `
       INSERT INTO tasks (email_id, title, source, priority, status)
-      VALUES ($1, $2, $3, $4, $5)
+      VALUES ($1, $2, $3, $4, $5) ORDER BY received_at DESC NULLS LAST, created_at DESC
       RETURNING *
       `,
             [
