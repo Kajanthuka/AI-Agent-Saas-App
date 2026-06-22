@@ -8,33 +8,41 @@ function getHeader(headers: { name?: string | null; value?: string | null }[], n
     return headers.find((header) => header.name?.toLowerCase() === name.toLowerCase())?.value ?? "";
 }
 
+// function decodeBase64Url(value: string) {
+//     const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+//     return Buffer.from(normalized, "base64").toString("utf-8");
+// }
+
+// function decodeBase64Url(value: string) {
+//     const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+//     return Buffer.from(normalized, "base64").toString("utf-8");
+// }
+
 function decodeBase64Url(value: string) {
     const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
     return Buffer.from(normalized, "base64").toString("utf-8");
 }
 
-function getMessageBody(payload: any): string {
-    if (payload.body?.data) {
-        return decodeBase64Url(payload.body.data);
+function findPart(payload: any, mimeType: string): any {
+    if (!payload) {
+        return null;
+    }
+
+    if (payload.mimeType === mimeType && payload.body?.data) {
+        return payload;
     }
 
     if (payload.parts?.length) {
-        const textPart = payload.parts.find((part: any) => part.mimeType === "text/plain");
-
-        if (textPart?.body?.data) {
-            return decodeBase64Url(textPart.body.data);
-        }
-
         for (const part of payload.parts) {
-            const nested = getMessageBody(part);
+            const found = findPart(part, mimeType);
 
-            if (nested) {
-                return nested;
+            if (found) {
+                return found;
             }
         }
     }
 
-    return "";
+    return null;
 }
 
 function cleanEmailText(value: string) {
@@ -42,10 +50,68 @@ function cleanEmailText(value: string) {
         .replace(/<style[\s\S]*?<\/style>/gi, "")
         .replace(/<script[\s\S]*?<\/script>/gi, "")
         .replace(/<[^>]+>/g, " ")
+        .replace(/&nbsp;/g, " ")
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
         .replace(/https?:\/\/\S+/g, "")
         .replace(/\s+/g, " ")
         .trim();
 }
+
+function getMessageBody(payload: any, fallback = "") {
+    const textPart = findPart(payload, "text/plain");
+
+    if (textPart?.body?.data) {
+        return cleanEmailText(decodeBase64Url(textPart.body.data));
+    }
+
+    const htmlPart = findPart(payload, "text/html");
+
+    if (htmlPart?.body?.data) {
+        return cleanEmailText(decodeBase64Url(htmlPart.body.data));
+    }
+
+    if (payload?.body?.data) {
+        return cleanEmailText(decodeBase64Url(payload.body.data));
+    }
+
+    return cleanEmailText(fallback);
+}
+
+// function getMessageBody(payload: any): string {
+//     if (payload.body?.data) {
+//         return decodeBase64Url(payload.body.data);
+//     }
+
+//     if (payload.parts?.length) {
+//         const textPart = payload.parts.find((part: any) => part.mimeType === "text/plain");
+
+//         if (textPart?.body?.data) {
+//             return decodeBase64Url(textPart.body.data);
+//         }
+
+//         for (const part of payload.parts) {
+//             const nested = getMessageBody(part);
+
+//             if (nested) {
+//                 return nested;
+//             }
+//         }
+//     }
+
+//     return "";
+// }
+
+// function cleanEmailText(value: string) {
+//     return value
+//         .replace(/<style[\s\S]*?<\/style>/gi, "")
+//         .replace(/<script[\s\S]*?<\/script>/gi, "")
+//         .replace(/<[^>]+>/g, " ")
+//         .replace(/https?:\/\/\S+/g, "")
+//         .replace(/\s+/g, " ")
+//         .trim();
+// }
 export async function POST() {
     const accountResult = await pool.query(
         `
@@ -115,8 +181,14 @@ export async function POST() {
         // const messageBody = getMessageBody(payload) || messageResponse.data.snippet || "";
 
 
-        const rawBody = getMessageBody(payload) || messageResponse.data.snippet || "";
-        const messageBody = cleanEmailText(rawBody).slice(0, 2000);
+        // const rawBody = getMessageBody(payload) || messageResponse.data.snippet || "";
+        // const messageBody = cleanEmailText(rawBody).slice(0, 2000);
+
+        const messageBody = getMessageBody(
+            payload,
+            messageResponse.data.snippet ?? ""
+        ).slice(0, 2000);
+
         const urgency = detectUrgency(`${subject} ${messageBody}`);
 
         //     const existing = await pool.query(

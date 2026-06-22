@@ -165,8 +165,13 @@ export default function EmailPage() {
                                     <UrgencyBadge urgency={email.urgency} />
                                 </div>
 
-                                <p className="mt-3 text-sm leading-6 text-slate-600">
+                                {/* <p className="mt-3 text-sm leading-6 text-slate-600">
                                     {email.preview}
+                                </p> */}
+
+                                <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                                    {email.preview.slice(0, 300)}
+                                    {email.preview.length > 300 ? "..." : ""}
                                 </p>
 
                                 <div className="mt-4 flex flex-wrap items-center gap-2">
