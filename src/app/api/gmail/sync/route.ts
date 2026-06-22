@@ -37,6 +37,15 @@ function getMessageBody(payload: any): string {
     return "";
 }
 
+function cleanEmailText(value: string) {
+    return value
+        .replace(/<style[\s\S]*?<\/style>/gi, "")
+        .replace(/<script[\s\S]*?<\/script>/gi, "")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/https?:\/\/\S+/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
 export async function POST() {
     const accountResult = await pool.query(
         `
@@ -79,7 +88,8 @@ export async function POST() {
     const listResponse = await gmail.users.messages.list({
         userId: "me",
         maxResults: 20,
-        q: "in:inbox newer_than:1d",
+        // q: "in:inbox newer_than:1d",
+        q: "in:inbox newer_than:7d",
         // q: "in:inbox"
     });
 
@@ -102,7 +112,11 @@ export async function POST() {
 
         const sender = getHeader(headers, "From");
         const subject = getHeader(headers, "Subject") || "No subject";
-        const messageBody = getMessageBody(payload) || messageResponse.data.snippet || "";
+        // const messageBody = getMessageBody(payload) || messageResponse.data.snippet || "";
+
+
+        const rawBody = getMessageBody(payload) || messageResponse.data.snippet || "";
+        const messageBody = cleanEmailText(rawBody).slice(0, 2000);
         const urgency = detectUrgency(`${subject} ${messageBody}`);
 
         //     const existing = await pool.query(
@@ -221,14 +235,22 @@ export async function POST() {
 
             await client.query("COMMIT");
             savedEmails.push(email);
+            // } catch (error) {
+            //     await client.query("ROLLBACK");
+
         } catch (error) {
             await client.query("ROLLBACK");
+            console.error("Gmail sync insert error:", error);
         } finally {
+            // } finally {
             client.release();
         }
     }
 
     return NextResponse.json({
+        // synced: savedEmails.length,
+        // emails: savedEmails,
+        fetched: messages.length,
         synced: savedEmails.length,
         emails: savedEmails,
     });
