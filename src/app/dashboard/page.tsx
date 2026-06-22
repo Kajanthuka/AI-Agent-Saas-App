@@ -489,7 +489,41 @@ export default function DashboardPage() {
                     >
                         Connect Gmail
                     </a>
+
                     <DashboardPanel title="Emails" icon={Inbox} href="/email">
+                        <div className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200">
+                            {emails.map((email, index) => (
+                                <div
+                                    key={email.id ?? `email-${index}`}
+                                    className="grid gap-2 bg-white px-4 py-3 transition hover:bg-slate-50 md:grid-cols-[180px_1fr_auto] md:items-center"
+                                >
+                                    <div className="min-w-0">
+                                        <p className="truncate text-sm font-semibold text-slate-950">
+                                            {getSenderName(email.from)}
+                                        </p>
+                                        <p className="truncate text-xs text-slate-500">
+                                            {email.from}
+                                        </p>
+                                    </div>
+
+                                    <div className="min-w-0">
+                                        <p className="truncate text-sm font-semibold text-slate-900">
+                                            {email.subject}
+                                        </p>
+                                        <p className="truncate text-sm text-slate-500">
+                                            {createEmailPreview(email.preview)}
+                                        </p>
+                                    </div>
+
+                                    <div className="flex items-center gap-2 md:justify-end">
+                                        <UrgencyBadge urgency={email.urgency} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </DashboardPanel>
+
+                    {/* <DashboardPanel title="Emails" icon={Inbox} href="/email">
 
                         <div className="space-y-3">
                             {emails.map((email, index) => (
@@ -516,7 +550,8 @@ export default function DashboardPage() {
                                 </div>
                             ))}
                         </div>
-                    </DashboardPanel>
+                    </DashboardPanel> */}
+
 
                     <DashboardPanel title="AI Generated Tasks" icon={ListChecks} href="/tasks">
                         <div className="space-y-3">
@@ -636,6 +671,29 @@ function DashboardPanel({
             {children}
         </div>
     );
+}
+
+function getSenderName(value: string) {
+    return value.replace(/<.*?>/g, "").replace(/"/g, "").trim();
+}
+
+// function createEmailPreview(value: string) {
+//     return value
+//         .replace(/â€Œ/g, "")
+//         .replace(/Â/g, "")
+//         .replace(/\s+/g, " ")
+//         .trim()
+//         .slice(0, 120);
+// }
+
+function createEmailPreview(value: string) {
+    const cleaned = value
+        .replace(/â€Œ/g, "")
+        .replace(/Â/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    return cleaned.length > 120 ? `${cleaned.slice(0, 120)}...` : cleaned;
 }
 
 function UrgencyBadge({ urgency }: { urgency: string }) {
