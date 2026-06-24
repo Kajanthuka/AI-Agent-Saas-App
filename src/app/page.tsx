@@ -6,7 +6,8 @@ import { redirect } from "next/navigation";
 // import { FaRegSmile } from "react-icons/fa";
 // import Link from "next/link";
 export default function Home() {
-  redirect("/dashboard");
+  // redirect("/dashboard");
+  redirect("/auth/login");
   // return (
   //   <div>
   //     {/* <h1> Hello AI Agent APP</h1 > */}
