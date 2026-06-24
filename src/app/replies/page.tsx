@@ -122,9 +122,16 @@ export default function RepliesPage() {
             method: "POST",
         });
 
+
+        // if (!response.ok) {
+        //     const error = await response.json();
+        //     alert(error.error ?? "Failed to regenerate reply");
+        //     return;
+
+        // }
         if (!response.ok) {
             const error = await response.json();
-            alert(error.error ?? "Failed to regenerate reply");
+            alert(error.error ?? "AI is busy. Please try again.");
             return;
         }
 

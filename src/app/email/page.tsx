@@ -3,6 +3,8 @@
 import { Inbox, MailCheck, MailQuestion, MailWarning } from "lucide-react";
 // import { useState } from "react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+
 type Email = {
     id: number;
     from: string;
@@ -147,11 +149,20 @@ export default function EmailPage() {
                     </div>
 
                     <div className="space-y-3">
+
                         {emails.map((email) => (
                             <article
                                 key={email.id}
                                 className="rounded-xl border border-slate-200 p-4 transition hover:border-emerald-200 hover:bg-emerald-50/30"
                             >
+
+                                <Link
+                                    key={email.id}
+                                    href={`/email/${email.id}`}
+                                    className="block rounded-xl border border-slate-200 p-4 transition hover:border-emerald-200 hover:bg-emerald-50/30"
+                                >
+                                    ...
+                                </Link>
                                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                     <div>
                                         <p className="font-semibold text-slate-950">
@@ -202,11 +213,12 @@ export default function EmailPage() {
                                     </span>
                                 </div>
                             </article>
+
                         ))}
                     </div>
                 </section>
-            </div>
-        </main>
+            </div >
+        </main >
     );
 }
 
