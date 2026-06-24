@@ -38,5 +38,27 @@ export async function GET(request: Request) {
         ]
     );
 
-    return NextResponse.redirect("http://localhost:3000/dashboard");
+    // return NextResponse.redirect("http://localhost:3000/dashboard");
+
+    const syncUrl = new URL("/api/gmail/sync", request.url);
+    let synced = 0;
+
+    try {
+        const syncResponse = await fetch(syncUrl, {
+            method: "POST",
+        });
+
+        if (syncResponse.ok) {
+            const syncData = await syncResponse.json();
+            synced = syncData.synced ?? 0;
+        }
+    } catch (error) {
+        console.error("Gmail sync after connect failed:", error);
+    }
+
+    const dashboardUrl = new URL("/dashboard", request.url);
+    dashboardUrl.searchParams.set("gmailConnected", "true");
+    dashboardUrl.searchParams.set("synced", String(synced));
+
+    return NextResponse.redirect(dashboardUrl);
 }

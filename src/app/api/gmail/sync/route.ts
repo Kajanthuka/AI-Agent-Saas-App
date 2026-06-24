@@ -151,12 +151,18 @@ export async function POST() {
     //     q: "in:inbox",
     // });
 
+    // const listResponse = await gmail.users.messages.list({
+    //     userId: "me",
+    //     maxResults: 20,
+    //     // q: "in:inbox newer_than:1d",
+    //     q: "in:inbox newer_than:7d",
+    //     // q: "in:inbox"
+    // });
+
     const listResponse = await gmail.users.messages.list({
         userId: "me",
-        maxResults: 20,
-        // q: "in:inbox newer_than:1d",
-        q: "in:inbox newer_than:7d",
-        // q: "in:inbox"
+        maxResults: 50,
+        q: "newer_than:1d",
     });
 
     const messages = listResponse.data.messages ?? [];

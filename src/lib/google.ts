@@ -8,7 +8,13 @@ export function getGoogleOAuthClient() {
     );
 }
 
+// export const gmailScopes = [
+//     "https://www.googleapis.com/auth/gmail.readonly",
+//     "https://www.googleapis.com/auth/userinfo.email",
+// ];
+
 export const gmailScopes = [
     "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
     "https://www.googleapis.com/auth/userinfo.email",
 ];

@@ -187,6 +187,27 @@ export default function RepliesPage() {
             </main>
         );
     }
+
+
+    async function sendReply(id: number) {
+        const response = await fetch(`/api/replies/${id}/send`, {
+            method: "POST",
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            alert(error.error ?? "Failed to send reply");
+            return;
+        }
+
+        const updatedReply = await response.json();
+
+        setReplies((currentReplies) =>
+            currentReplies.map((reply) =>
+                reply.id === id ? { ...reply, ...updatedReply, id: reply.id } : reply
+            )
+        );
+    }
     return (
         <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
             <div className="mx-auto max-w-7xl space-y-6">
@@ -276,7 +297,7 @@ export default function RepliesPage() {
                                         Ready
                                     </button>
 
-                                    <button
+                                    {/* <button
                                         type="button"
                                         onClick={() => updateReplyStatus(reply.id, "Sent")}
 
@@ -287,6 +308,15 @@ export default function RepliesPage() {
                                     >
                                         <Send size={16} />
                                         Sent
+                                    </button> */}
+
+                                    <button
+                                        type="button"
+                                        onClick={() => sendReply(reply.id)}
+                                        className="inline-flex h-9 items-center gap-2 rounded-lg bg-emerald-700 px-3 text-sm font-medium text-white transition hover:bg-emerald-800"
+                                    >
+                                        <Send size={16} />
+                                        Send reply
                                     </button>
 
                                     {/* <button
