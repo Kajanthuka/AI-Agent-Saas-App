@@ -6,6 +6,7 @@ import { GiPadlock } from 'react-icons/gi';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, RegisterSchema } from '@/lib/schemas/registerSchema';
+import { useRouter } from "next/navigation";
 
 
 export default function RegisterFrom() {
@@ -14,9 +15,30 @@ export default function RegisterFrom() {
         mode: 'onTouched'
 
     });
-    const onSubmit = (data: RegisterSchema) => {
-        console.log(data);
-    }
+    const router = useRouter();
+
+    // const onSubmit = (data: RegisterSchema) => {
+    //     console.log(data);
+    // }
+    const onSubmit = async (data: RegisterSchema) => {
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.error ?? "Register failed");
+            return;
+        }
+
+        router.push("/dashboard");
+        router.refresh();
+    };
 
 
     return (

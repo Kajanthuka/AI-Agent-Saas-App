@@ -6,17 +6,42 @@ import { GiPadlock } from 'react-icons/gi';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema, loginSchema } from '@/lib/schemas/loginSchema';
+import { useRouter } from "next/navigation";
 
 
 export default function LoginForm() {
+    const router = useRouter();
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         mode: 'onTouched'
 
     });
-    const onSubmit = (data: LoginSchema) => {
-        console.log(data);
-    }
+
+
+    // const onSubmit = (data: LoginSchema) => {
+    //     console.log(data);
+    // }
+
+    const onSubmit = async (data: LoginSchema) => {
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.error ?? "Login failed");
+            return;
+        }
+
+        router.push("/dashboard");
+        router.refresh();
+    };
+
 
     return (
         <Card className='mt-16 w-full max-w-md mx-auto'>
@@ -36,6 +61,8 @@ export default function LoginForm() {
                         <Input
                             defaultValue=''
                             label='Email'
+                            type="email"
+                            autoComplete="email"
                             variant='bordered'
                             {...register('email')}
                             isInvalid={!!errors.email}
@@ -45,6 +72,7 @@ export default function LoginForm() {
                             defaultValue=''
                             label='Password'
                             type='password'
+                            autoComplete="current-password"
                             variant='bordered'
                             {...register('password')}
                             isInvalid={!!errors.password}
