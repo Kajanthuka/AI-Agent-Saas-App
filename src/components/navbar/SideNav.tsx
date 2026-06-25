@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 const navItems = [
+    // { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Emails", href: "/email", icon: Inbox },
     { label: "Tasks", href: "/tasks", icon: ListChecks },
