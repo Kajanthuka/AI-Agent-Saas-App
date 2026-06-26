@@ -4,10 +4,21 @@ import { pool } from "@/lib/db";
 import { detectUrgency, generateSuggestedReply, generateTaskTitle } from "@/lib/email-ai";
 import { getGoogleOAuthClient } from "@/lib/google";
 
-function getHeader(headers: { name?: string | null; value?: string | null }[], name: string) {
-    return headers.find((header) => header.name?.toLowerCase() === name.toLowerCase())?.value ?? "";
-}
+import libmime from "libmime";
 
+// function getHeader(headers: { name?: string | null; value?: string | null }[], name: string) {
+//     return headers.find((header) => header.name?.toLowerCase() === name.toLowerCase())?.value ?? "";
+// }
+
+
+
+function getHeader(headers: any[], name: string) {
+    const value =
+        headers.find((header) => header.name.toLowerCase() === name.toLowerCase())
+            ?.value ?? "";
+
+    return libmime.decodeWords(value);
+}
 // function decodeBase64Url(value: string) {
 //     const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
 //     return Buffer.from(normalized, "base64").toString("utf-8");
@@ -182,8 +193,11 @@ export async function POST() {
         const payload = messageResponse.data.payload;
         const headers = payload?.headers ?? [];
 
+        // const sender = getHeader(headers, "From");
+        // const subject = getHeader(headers, "Subject") || "No subject";
+
+        const subject = getHeader(headers, "Subject");
         const sender = getHeader(headers, "From");
-        const subject = getHeader(headers, "Subject") || "No subject";
         // const messageBody = getMessageBody(payload) || messageResponse.data.snippet || "";
 
 
