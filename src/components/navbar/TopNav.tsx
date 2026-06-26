@@ -32,6 +32,13 @@ export default function TopNav() {
         router.push(`/search?q=${encodeURIComponent(query)}`);
     }
 
+    const handleLogout = async () => {
+        await fetch("/api/auth/logout", {
+            method: "POST",
+        });
+
+        window.location.href = "/auth/login";
+    };
     return (
         <div className="min-h-0 bg-gray-50 px-4 py-2 lg:px-1">
             <Navbar
@@ -163,13 +170,24 @@ export default function TopNav() {
                             >
                                 <Divider />
                             </DropdownItem>
-                            <DropdownItem
+                            {/* <DropdownItem
                                 key="logout"
                                 as={NextLink}
                                 href="/auth/login"
                                 color="danger"
                                 startContent={<LogOut size={22} />}
                                 className="py-3 text-lg font-medium"
+                            >
+                                Log out
+                            </DropdownItem> */}
+
+                            <DropdownItem
+                                key="logout"
+                                textValue="Log out"
+                                color="danger"
+                                startContent={<LogOut size={22} />}
+                                className="py-3 text-lg font-medium"
+                                onPress={handleLogout}
                             >
                                 Log out
                             </DropdownItem>
