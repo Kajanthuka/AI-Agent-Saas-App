@@ -6,40 +6,6 @@ import {
     generateTaskTitle,
 } from "@/lib/email-ai";
 
-// export async function GET() {
-//     const result = await pool.query(`
-//     SELECT
-//       id,
-//       sender AS "from",
-//       subject,
-//       message AS preview,
-//       urgency,
-//       status,
-//       created_at AS "createdAt"
-//     FROM emails
-//     ORDER BY created_at DESC
-//   `);
-
-//     return NextResponse.json(result.rows);
-// }
-// export async function GET() {
-//     const result = await pool.query(`
-//     SELECT
-//       id,
-//       sender AS "from",
-//       subject,
-//       message AS preview,
-//       urgency,
-//       status,
-//       received_at AS "receivedAt",
-//       created_at AS "createdAt"
-//     FROM emails
-//     ORDER BY received_at DESC NULLS LAST, created_at DESC
-//   `);
-
-//     return NextResponse.json(result.rows);
-// }
-
 export async function GET() {
     const result = await pool.query(`
     SELECT
@@ -89,22 +55,6 @@ export async function POST(request: Request) {
             message: email.message,
         });
 
-        //     const replyResult = await client.query(
-        //         `
-        //   INSERT INTO ai_replies (email_id, title, recipient, source, preview, status)
-        //   VALUES ($1, $2, $3, $4, $5, $6) ORDER BY received_at DESC NULLS LAST, created_at DESC
-        //   RETURNING *
-        //   `,
-        //         [
-        //             email.id,
-        //             `Reply to ${email.sender}`,
-        //             email.sender,
-        //             email.subject,
-        //             replyText,
-        //             "Draft",
-        //         ]
-        //     );
-
         const replyResult = await client.query(
             `
   INSERT INTO ai_replies (email_id, title, recipient, source, preview, status)
@@ -120,26 +70,6 @@ export async function POST(request: Request) {
                 "Draft",
             ]
         );
-
-
-        //     const taskResult = await client.query(
-        //         `
-        //   INSERT INTO tasks (email_id, title, source, priority, status)
-        //   VALUES ($1, $2, $3, $4, $5) ORDER BY received_at DESC NULLS LAST, created_at DESC
-        //   RETURNING *
-        //   `,
-        //         [
-        //             email.id,
-        //             generateTaskTitle({
-        //                 sender: email.sender,
-        //                 subject: email.subject,
-        //                 message: email.message,
-        //             }),
-        //             `${email.sender} email`,
-        //             urgency,
-        //             "Pending",
-        //         ]
-        //     );
 
         const taskResult = await client.query(
             `
@@ -168,17 +98,10 @@ export async function POST(request: Request) {
             task: taskResult.rows[0],
         });
 
-        // } catch (error) {
-        //     await client.query("ROLLBACK");
-        //     return NextResponse.json(
-        //         { error: "Failed to create email" },
-        //         { status: 500 }
-        //     );
     } catch (error) {
         await client.query("ROLLBACK");
         console.error("Gmail sync insert error:", error);
     } finally {
-        // } finally {
         client.release();
     }
 }

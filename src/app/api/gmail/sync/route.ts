@@ -6,12 +6,6 @@ import { getGoogleOAuthClient } from "@/lib/google";
 
 import libmime from "libmime";
 
-// function getHeader(headers: { name?: string | null; value?: string | null }[], name: string) {
-//     return headers.find((header) => header.name?.toLowerCase() === name.toLowerCase())?.value ?? "";
-// }
-
-
-
 function getHeader(headers: any[], name: string) {
     const value =
         headers.find((header) => header.name.toLowerCase() === name.toLowerCase())
@@ -19,15 +13,6 @@ function getHeader(headers: any[], name: string) {
 
     return libmime.decodeWords(value);
 }
-// function decodeBase64Url(value: string) {
-//     const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-//     return Buffer.from(normalized, "base64").toString("utf-8");
-// }
-
-// function decodeBase64Url(value: string) {
-//     const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-//     return Buffer.from(normalized, "base64").toString("utf-8");
-// }
 
 function decodeBase64Url(value: string) {
     const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
@@ -90,39 +75,6 @@ function getMessageBody(payload: any, fallback = "") {
     return cleanEmailText(fallback);
 }
 
-// function getMessageBody(payload: any): string {
-//     if (payload.body?.data) {
-//         return decodeBase64Url(payload.body.data);
-//     }
-
-//     if (payload.parts?.length) {
-//         const textPart = payload.parts.find((part: any) => part.mimeType === "text/plain");
-
-//         if (textPart?.body?.data) {
-//             return decodeBase64Url(textPart.body.data);
-//         }
-
-//         for (const part of payload.parts) {
-//             const nested = getMessageBody(part);
-
-//             if (nested) {
-//                 return nested;
-//             }
-//         }
-//     }
-
-//     return "";
-// }
-
-// function cleanEmailText(value: string) {
-//     return value
-//         .replace(/<style[\s\S]*?<\/style>/gi, "")
-//         .replace(/<script[\s\S]*?<\/script>/gi, "")
-//         .replace(/<[^>]+>/g, " ")
-//         .replace(/https?:\/\/\S+/g, "")
-//         .replace(/\s+/g, " ")
-//         .trim();
-// }
 export async function POST() {
     const accountResult = await pool.query(
         `
@@ -156,20 +108,6 @@ export async function POST() {
         auth: oauth2Client,
     });
 
-    // const listResponse = await gmail.users.messages.list({
-    //     userId: "me",
-    //     maxResults: 10,
-    //     q: "in:inbox",
-    // });
-
-    // const listResponse = await gmail.users.messages.list({
-    //     userId: "me",
-    //     maxResults: 20,
-    //     // q: "in:inbox newer_than:1d",
-    //     q: "in:inbox newer_than:7d",
-    //     // q: "in:inbox"
-    // });
-
     const listResponse = await gmail.users.messages.list({
         userId: "me",
         maxResults: 50,
@@ -193,16 +131,8 @@ export async function POST() {
         const payload = messageResponse.data.payload;
         const headers = payload?.headers ?? [];
 
-        // const sender = getHeader(headers, "From");
-        // const subject = getHeader(headers, "Subject") || "No subject";
-
         const subject = getHeader(headers, "Subject");
         const sender = getHeader(headers, "From");
-        // const messageBody = getMessageBody(payload) || messageResponse.data.snippet || "";
-
-
-        // const rawBody = getMessageBody(payload) || messageResponse.data.snippet || "";
-        // const messageBody = cleanEmailText(rawBody).slice(0, 2000);
 
         const messageBody = getMessageBody(
             payload,
@@ -211,19 +141,6 @@ export async function POST() {
 
         const urgency = detectUrgency(`${subject} ${messageBody}`);
 
-        //     const existing = await pool.query(
-        //         `
-        //   SELECT id
-        //   FROM emails
-        //   WHERE subject = $1 AND sender = $2
-        //   LIMIT 1
-        //   `,
-        //         [subject, sender]
-        //     );
-
-        //     if (existing.rows.length > 0) {
-        //         continue;
-        //     }
 
         const existing = await pool.query(
             `
@@ -248,16 +165,6 @@ export async function POST() {
             const receivedAt = messageResponse.data.internalDate
                 ? new Date(Number(messageResponse.data.internalDate))
                 : new Date();
-
-
-            //     const emailResult = await client.query(
-            //         `
-            // INSERT INTO emails (sender, subject, message, urgency, status)
-            // VALUES ($1, $2, $3, $4, $5)
-            // RETURNING *
-            // `,
-            //         [sender, subject, messageBody, urgency, "Not checked"]
-            //     );
 
             const emailResult = await client.query(
                 `
@@ -327,21 +234,16 @@ export async function POST() {
 
             await client.query("COMMIT");
             savedEmails.push(email);
-            // } catch (error) {
-            //     await client.query("ROLLBACK");
 
         } catch (error) {
             await client.query("ROLLBACK");
             console.error("Gmail sync insert error:", error);
         } finally {
-            // } finally {
             client.release();
         }
     }
 
     return NextResponse.json({
-        // synced: savedEmails.length,
-        // emails: savedEmails,
         fetched: messages.length,
         synced: savedEmails.length,
         emails: savedEmails,

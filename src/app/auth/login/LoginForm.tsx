@@ -17,11 +17,6 @@ export default function LoginForm() {
 
     });
 
-
-    // const onSubmit = (data: LoginSchema) => {
-    //     console.log(data);
-    // }
-
     const onSubmit = async (data: LoginSchema) => {
         const response = await fetch("/api/auth/login", {
             method: "POST",

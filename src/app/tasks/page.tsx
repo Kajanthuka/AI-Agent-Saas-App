@@ -1,42 +1,10 @@
-// import React from 'react'
-
-// export default function TasksPage() {
-//     return (
-//         <div>TasksPage</div>
-//     )
-// }
 
 "use client";
 
 import { CheckCircle2, Circle, ListChecks, Timer } from "lucide-react";
 import { useState, useEffect } from "react";
 
-// const initialTasks = [
-//     {
-//         id: 1,
-//         title: "Send onboarding meeting link",
-//         source: "Sarah Johnson email",
-//         priority: "High",
-//         status: "Pending",
-//     },
-//     {
-//         id: 2,
-//         title: "Review invoice total",
-//         source: "Michael Chen email",
-//         priority: "Medium",
-//         status: "Pending",
-//     },
-//     {
-//         id: 3,
-//         title: "Summarize weekly project update",
-//         source: "Emma Wilson email",
-//         priority: "Low",
-//         status: "Pending",
-//     },
-// ];
-
 export default function TasksPage() {
-    // const [tasks, setTasks] = useState(initialTasks);
 
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -52,15 +20,6 @@ export default function TasksPage() {
 
         loadTasks();
     }, []);
-
-    // function updateTaskStatus(id: number, status: "Pending" | "Completed") {
-    //     setTasks((currentTasks) =>
-    //         currentTasks.map((task) =>
-    //             task.id === id ? { ...task, status } : task
-    //         )
-    //     );
-    // }
-
 
 
     async function updateTaskStatus(id: number, status: "Pending" | "Completed") {

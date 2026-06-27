@@ -38,8 +38,6 @@ export async function GET(request: Request) {
         ]
     );
 
-    // return NextResponse.redirect("http://localhost:3000/dashboard");
-
     const syncUrl = new URL("/api/gmail/sync", request.url);
     let synced = 0;
 

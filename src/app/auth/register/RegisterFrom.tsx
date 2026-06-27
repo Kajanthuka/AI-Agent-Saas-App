@@ -17,9 +17,6 @@ export default function RegisterFrom() {
     });
     const router = useRouter();
 
-    // const onSubmit = (data: RegisterSchema) => {
-    //     console.log(data);
-    // }
     const onSubmit = async (data: RegisterSchema) => {
         const response = await fetch("/api/auth/register", {
             method: "POST",

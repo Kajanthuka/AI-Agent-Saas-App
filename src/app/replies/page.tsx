@@ -1,52 +1,8 @@
-// import React from 'react'
-
-// export default function AiRepliesPage() {
-//     return (
-//         <div>AiRepliesPage</div>
-//     )
-// }
-
 "use client";
 
 import { Bot, CheckCircle2, Copy, RefreshCw, Send } from "lucide-react";
-// import { useState } from "react";
 import { useEffect, useState } from "react";
 
-// const initialReplies = [
-//     {
-//         id: 1,
-//         title: "Reply to Sarah Johnson",
-//         recipient: "Sarah Johnson",
-//         source: "Client onboarding call needs confirmation",
-//         preview:
-//             "Hi Sarah, yes, we are confirmed for today. I will send over the meeting link shortly.",
-//         status: "Draft",
-//     },
-//     {
-//         id: 2,
-//         title: "Reply to Michael Chen",
-//         recipient: "Michael Chen",
-//         source: "Invoice question",
-//         preview:
-//             "Hi Michael, thanks for flagging this. I will review the invoice and get back to you with an update.",
-//         status: "Draft",
-//     },
-//     {
-//         id: 3,
-//         title: "Reply to Emma Wilson",
-//         recipient: "Emma Wilson",
-//         source: "Weekly update",
-//         preview:
-//             "Hi Emma, thanks for the weekly update. I will review the details and follow up if anything needs action.",
-//         status: "Draft",
-//     },
-// ];
-
-// const regeneratedReplies = [
-//     "Thanks for reaching out. I will review this and get back to you shortly with the next steps.",
-//     "Hi, I appreciate the update. I will check the details and follow up as soon as possible.",
-//     "Thanks for your message. I will handle this today and send you an update once complete.",
-// ];
 type Reply = {
     id: number;
     title: string;
@@ -55,12 +11,7 @@ type Reply = {
     preview: string;
     status: "Draft" | "Ready" | "Sent";
 };
-
-
 export default function RepliesPage() {
-    // const [replies, setReplies] = useState(initialReplies);
-
-
     const [replies, setReplies] = useState<Reply[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -96,39 +47,11 @@ export default function RepliesPage() {
         document.body.removeChild(textArea);
     }
 
-    // function regenerateReply(id: number) {
-    //     setReplies((currentReplies) =>
-    //         currentReplies.map((reply) => {
-    //             if (reply.id !== id) {
-    //                 return reply;
-    //             }
-
-    //             const randomReply =
-    //                 regeneratedReplies[
-    //                 Math.floor(Math.random() * regeneratedReplies.length)
-    //                 ];
-
-    //             return {
-    //                 ...reply,
-    //                 preview: randomReply,
-    //                 status: "Draft",
-    //             };
-    //         })
-    //     );
-    // }
-
     async function regenerateReply(id: number) {
         const response = await fetch(`/api/replies/${id}/regenerate`, {
             method: "POST",
         });
 
-
-        // if (!response.ok) {
-        //     const error = await response.json();
-        //     alert(error.error ?? "Failed to regenerate reply");
-        //     return;
-
-        // }
         if (!response.ok) {
             const error = await response.json();
             alert(error.error ?? "AI is busy. Please try again.");
@@ -143,22 +66,6 @@ export default function RepliesPage() {
             )
         );
     }
-
-    // function markAsReady(id: number) {
-    //     setReplies((currentReplies) =>
-    //         currentReplies.map((reply) =>
-    //             reply.id === id ? { ...reply, status: "Ready" } : reply
-    //         )
-    //     );
-    // }
-
-    // function markAsSent(id: number) {
-    //     setReplies((currentReplies) =>
-    //         currentReplies.map((reply) =>
-    //             reply.id === id ? { ...reply, status: "Sent" } : reply
-    //         )
-    //     );
-    // }
 
     async function updateReplyStatus(id: number, status: "Draft" | "Ready" | "Sent") {
         const response = await fetch(`/api/replies/${id}`, {
@@ -297,19 +204,6 @@ export default function RepliesPage() {
                                         Ready
                                     </button>
 
-                                    {/* <button
-                                        type="button"
-                                        onClick={() => updateReplyStatus(reply.id, "Sent")}
-
-                                        className={`inline-flex h-9 items-center gap-2 rounded-lg px-3 text-sm font-medium transition ${reply.status === "Sent"
-                                            ? "bg-emerald-700 text-white"
-                                            : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                                            }`}
-                                    >
-                                        <Send size={16} />
-                                        Sent
-                                    </button> */}
-
                                     <button
                                         type="button"
                                         onClick={() => sendReply(reply.id)}
@@ -318,20 +212,6 @@ export default function RepliesPage() {
                                         <Send size={16} />
                                         Send reply
                                     </button>
-
-                                    {/* <button
-                                        type="button"
-                                        onClick={() => updateReplyStatus(reply.id, "Ready")}
-                                    >
-                                        Ready
-                                    </button> */}
-
-                                    {/* <button
-                                        type="button"
-                                        onClick={() => updateReplyStatus(reply.id, "Sent")}
-                                    >
-                                        Sent
-                                    </button> */}
                                 </div>
                             </article>
                         ))}

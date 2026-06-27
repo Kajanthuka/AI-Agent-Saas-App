@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 
 const navItems = [
-    // { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Emails", href: "/email", icon: Inbox },
     { label: "Tasks", href: "/tasks", icon: ListChecks },
@@ -39,45 +38,6 @@ export default function SideNav() {
         };
     }, []);
 
-    // const handleProtectedClick = async (
-    //     event: React.MouseEvent<HTMLAnchorElement>
-    // ) => {
-    //     event.preventDefault();
-
-    //     const response = await fetch("/api/auth/me", {
-    //         cache: "no-store",
-    //     });
-
-    //     const data = await response.json();
-
-    //     if (!response.ok || !data.user) {
-    //         window.location.href = "/auth/login";
-    //         return;
-    //     }
-
-    //     const href = event.currentTarget.href;
-    //     window.location.href = href;
-    // };
-
-    // const handleProtectedClick = async (
-    //     event: React.MouseEvent<HTMLAnchorElement>
-    // ) => {
-    //     event.preventDefault();
-
-    //     const response = await fetch("/api/auth/me", {
-    //         cache: "no-store",
-    //     });
-
-    //     const data = await response.json();
-
-    //     if (!response.ok || !data.user) {
-    //         window.location.href = "/auth/login";
-    //         return;
-    //     }
-
-    //     setIsOpen(false);
-    //     window.location.href = event.currentTarget.href;
-    // };
 
     const handleProtectedClick = async (
         event: React.MouseEvent<HTMLAnchorElement>
@@ -143,20 +103,6 @@ export default function SideNav() {
                         const isActive = pathname === item.href;
 
                         return (
-                            // <Link
-                            //     key={item.href}
-                            //     href={item.href}
-
-                            //     className={`flex h-10 items-center gap-5 rounded-2xl px-4 text-lg font-medium transition ${isActive
-                            //         ? "bg-white/15 text-white shadow-lg shadow-indigo-950/40"
-                            //         : "text-white hover:bg-gray-200/20 hover:text-gray-200"
-                            //         }`}
-                            //     onClick={() => setIsOpen(false)}
-                            // // onClick={handleProtectedClick}
-                            // >
-                            //     <Icon size={20} />
-                            //     <span>{item.label}</span>
-                            // </Link>
                             <Link
                                 key={item.href}
                                 href={item.href}

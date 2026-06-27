@@ -2,13 +2,6 @@ import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 
 export async function GET() {
-  //   const emails = await pool.query(`
-  //   SELECT id, sender AS "from", subject, message AS preview, urgency, status
-  //   FROM emails
-  //   ORDER BY created_at DESC
-  //   LIMIT 5
-  // `);
-
   const emails = await pool.query(`
   SELECT
     id,

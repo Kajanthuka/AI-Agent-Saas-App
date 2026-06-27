@@ -14,40 +14,7 @@ type Email = {
     status: "Reviewed" | "Not checked";
 };
 
-
-
-// const initialEmails = [
-//     {
-//         id: 1,
-//         from: "Sarah Johnson",
-//         subject: "Client onboarding call needs confirmation",
-//         preview: "Can you confirm if we are still good for the onboarding call today?",
-//         urgency: "High",
-//         status: "Not checked",
-//     },
-//     {
-//         id: 2,
-//         from: "Michael Chen",
-//         subject: "Invoice question",
-//         preview: "I noticed a difference in the latest invoice total. Could you check it?",
-//         urgency: "Medium",
-//         status: "Not checked",
-//     },
-//     {
-//         id: 3,
-//         from: "Emma Wilson",
-//         subject: "Weekly update",
-//         preview: "Here is the weekly progress update for the automation project.",
-//         urgency: "Low",
-//         status: "Not checked",
-//     },
-// ];
-
-
-
-
 export default function EmailPage() {
-    // const [emails, setEmails] = useState(initialEmails);
 
     const [emails, setEmails] = useState<Email[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -79,14 +46,6 @@ export default function EmailPage() {
             </main>
         );
     }
-
-    // function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
-    //     setEmails((currentEmails) =>
-    //         currentEmails.map((email) =>
-    //             email.id === id ? { ...email, status } : email
-    //         )
-    //     );
-    // }
 
     async function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
         const response = await fetch(`/api/emails/${id}`, {
@@ -175,11 +134,6 @@ export default function EmailPage() {
 
                                     <UrgencyBadge urgency={email.urgency} />
                                 </div>
-
-                                {/* <p className="mt-3 text-sm leading-6 text-slate-600">
-                                    {email.preview}
-                                </p> */}
-
                                 <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
                                     {email.preview.slice(0, 300)}
                                     {email.preview.length > 300 ? "..." : ""}

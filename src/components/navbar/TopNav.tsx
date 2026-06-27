@@ -170,16 +170,6 @@ export default function TopNav() {
                             >
                                 <Divider />
                             </DropdownItem>
-                            {/* <DropdownItem
-                                key="logout"
-                                as={NextLink}
-                                href="/auth/login"
-                                color="danger"
-                                startContent={<LogOut size={22} />}
-                                className="py-3 text-lg font-medium"
-                            >
-                                Log out
-                            </DropdownItem> */}
 
                             <DropdownItem
                                 key="logout"
