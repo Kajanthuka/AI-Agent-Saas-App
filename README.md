@@ -49,9 +49,34 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 - React Hook Form
 - Zod
 
+## Getting Started 
+1. Clone the repository
+
+git clone https://github.com/your-username/taskpilot-ai.git
+cd taskpilot-ai
+
+2. Install dependencies
+npm install
+
+3. Create environment file
+
+Create a .env.local file in the project root.
+
+DATABASE_URL=postgresql://postgres:your_password@localhost:5432/taskpilotai
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/google/callback
+
+GEMINI_API_KEY=your_gemini_api_key
+
+CRON_SECRET=your_secret_key
+Do not commit .env.local to GitHub.
+
+
+
 ## Project Structure
 
-```txt
 src
 ├── app
 │   ├── api
@@ -83,33 +108,22 @@ src
     ├── auth.ts
     ├── db.ts
     └── schemas
-    
-    
-<!-- 
-# Getting Started 
 
-1. Clone the repository
 
-git clone https://github.com/your-username/taskpilot-ai.git
-cd taskpilot-ai
 
-2. Install dependencies
-npm install
 
-3. Create environment file
-Create a .env.local file in the project root.
 
-DATABASE_URL=postgresql://postgres:your_password@localhost:5432/taskpilotai
 
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/google/callback
 
-GEMINI_API_KEY=your_gemini_api_key
 
-CRON_SECRET=your_secret_key
 
-Do not commit .env.local to GitHub.
+
+
+
+
+
+
+
 
 # Database Setup
 This project uses PostgreSQL.
@@ -213,4 +227,4 @@ Production monitoring
 Author
 Built by Kajanthuka Ulaganathan.
 
- -->
+
