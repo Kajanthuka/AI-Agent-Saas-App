@@ -76,7 +76,7 @@ Do not commit .env.local to GitHub.
 
 
 ## Project Structure
-
+```txt
 src
 ├── app
 │   ├── api
@@ -110,7 +110,7 @@ src
     └── schemas
 
 
-
+```txt
 
 
 
