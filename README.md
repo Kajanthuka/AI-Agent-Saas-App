@@ -51,9 +51,8 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 
 ## Getting Started 
 1. Clone the repository
-
-git clone https://github.com/your-username/taskpilot-ai.git
-cd taskpilot-ai
+   git clone https://github.com/your-username/taskpilot-ai.git
+   cd taskpilot-ai
 
 2. Install dependencies
 npm install
@@ -111,18 +110,6 @@ src
 
 
 ```txt
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Database Setup
