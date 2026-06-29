@@ -52,8 +52,8 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 ## Getting Started 
 1. Clone the repository
 
-git clone https://github.com/your-username/taskpilot-ai.git
-cd taskpilot-ai
+  git clone https://github.com/your-username/taskpilot-ai.git
+  cd taskpilot-ai
 
 2. Install dependencies
 npm install
@@ -113,16 +113,16 @@ src
 # Database Setup
 This project uses PostgreSQL.
 Create a local PostgreSQL database:
-
-taskpilotai
+ taskpilotai
 
 Main database tables:
-users
-sessions
-connected_accounts
-emails
-ai_replies
-tasks
+
+- users
+- sessions
+- connected_accounts
+- emails
+- ai_replies
+- tasks
 
 Run Locally
 npm run dev
@@ -138,18 +138,18 @@ Protected pages require login before access.
 
 Protected pages include:
 
-Dashboard
-Emails
-Email details
-Tasks
-AI Replies
-Members
-Settings
-Account
-Preferences
-Security
-Feedback
-Search
+- Dashboard
+- Emails
+- Email details
+- Tasks
+- AI Replies
+- Members
+- Settings
+- Account
+- Preferences
+- Security
+- Feedback
+- Search
 
 ## Gmail Integration
 
@@ -192,24 +192,24 @@ User opens an email
 → User sends the reply through Gmail API
 ```
 # Email Workflow
-
+```txt
 Connect Gmail
 → Sync inbox emails
 → Store emails in PostgreSQL
 → View emails in dashboard/email page
 → Generate AI replies
 → Create tasks from email context
-
+```
 
 
 # Future Improvements
-AWS deployment
-Scheduled email sync
-Improve Gmail reply threading and sent email tracking
-Role-based workspace members
-Improved AI task extraction
-Notification system
-Production monitoring
+- AWS deployment
+- Scheduled email sync
+- Improve Gmail reply threading and sent email tracking
+- Role-based workspace members
+- Improved AI task extraction
+- Notification system
+- Production monitoring
 
 
 # Author
