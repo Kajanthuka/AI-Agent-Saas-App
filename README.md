@@ -52,15 +52,16 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 ## Getting Started 
 1. Clone the repository
 
-  git clone https://github.com/your-username/taskpilot-ai.git
-  cd taskpilot-ai
+  - git clone https://github.com/your-username/taskpilot-ai.git
+
+  - cd taskpilot-ai
 
 2. Install dependencies
-npm install
+  - npm install
 
 3. Create environment file
 
-Create a .env.local file in the project root.
+  - Create a .env.local file in the project root.
 
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/taskpilotai
 GOOGLE_CLIENT_ID=your_google_client_id
@@ -69,8 +70,7 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/google/callback
 GEMINI_API_KEY=your_gemini_api_key
 CRON_SECRET=your_secret_key
 
-Do not commit .env.local to GitHub.
-
+- Do not commit .env.local to GitHub.
 
 
 ## Project Structure
@@ -113,7 +113,7 @@ src
 # Database Setup
 This project uses PostgreSQL.
 Create a local PostgreSQL database:
- taskpilotai
+ - taskpilotai
 
 Main database tables:
 
@@ -125,7 +125,7 @@ Main database tables:
 - tasks
 
 Run Locally
-npm run dev
+ - npm run dev
 
 Open:
 http://localhost:3000
@@ -164,7 +164,7 @@ After Gmail is connected, the app can:
 
 Example Gmail sync query:
 
-in:inbox newer_than:1d
+ - in:inbox newer_than:1d
 
 For sending emails, the app requires Gmail send permission:
 https://www.googleapis.com/auth/gmail.send
@@ -181,8 +181,7 @@ Users can:
 - Review the generated reply before sending
 - Send AI-generated replies through the Gmail API
 
-The reply flow:
-
+# Reply Workflow
 ```txt
 User opens an email
 → App reads saved email content
