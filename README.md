@@ -61,14 +61,16 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 
 3. Create environment file
 
-  - Create a .env.local file in the project root.
-
+  Create a .env.local file in the project root.
+```txt
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/taskpilotai
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/google/callback
 GEMINI_API_KEY=your_gemini_api_key
 CRON_SECRET=your_secret_key
+
+```
 
 - Do not commit .env.local to GitHub.
 
