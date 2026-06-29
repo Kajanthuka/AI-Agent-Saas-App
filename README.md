@@ -83,8 +83,11 @@ src
     ├── auth.ts
     ├── db.ts
     └── schemas
+    
+    
+<!-- 
+# Getting Started 
 
-    Getting Started
 1. Clone the repository
 
 git clone https://github.com/your-username/taskpilot-ai.git
@@ -108,7 +111,7 @@ CRON_SECRET=your_secret_key
 
 Do not commit .env.local to GitHub.
 
-Database Setup
+# Database Setup
 This project uses PostgreSQL.
 Create a local PostgreSQL database:
 
@@ -210,4 +213,4 @@ Production monitoring
 Author
 Built by Kajanthuka Ulaganathan.
 
-
+ -->
