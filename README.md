@@ -1,9 +1,9 @@
 
 # TaskPilot AI
 
-TaskPilot AI is an AI-powered email productivity web application that helps users manage emails, generate AI replies, and create tasks from Gmail messages.
+TaskPilot AI is an AI-powered email productivity web application that helps users manage emails, generate AI replies, send email responses, and create tasks from Gmail messages.
 
-The app connects with Gmail, fetches recent inbox emails, stores them in PostgreSQL, and uses AI to generate professional email replies and task suggestions.
+The app connects with Gmail, fetches recent inbox emails, stores them in PostgreSQL, uses AI to generate professional email replies and task suggestions, and allows users to send reviewed AI-generated replies through Gmail.
 
 ## Features
 
