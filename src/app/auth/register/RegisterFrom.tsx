@@ -55,7 +55,7 @@ export default function RegisterFrom() {
                     <div className='space-y-4'>
 
 
-                        <Input
+                        {/* <Input
                             defaultValue=''
                             label='Name'
                             name="name"
@@ -64,9 +64,19 @@ export default function RegisterFrom() {
                             {...register('name')}
                             isInvalid={!!errors.name}
                             errorMessage={errors.name?.message}
-                        />
+                        /> */}
 
                         <Input
+                            defaultValue=""
+                            label="Name"
+                            autoComplete="name"
+                            variant="bordered"
+                            {...register("name")}
+                            isInvalid={!!errors.name}
+                            errorMessage={errors.name?.message}
+                        />
+
+                        {/* <Input
                             defaultValue=''
                             label='Email'
                             name="email"
@@ -76,8 +86,30 @@ export default function RegisterFrom() {
                             {...register('email')}
                             isInvalid={!!errors.email}
                             errorMessage={errors.email?.message}
-                        />
+                        /> */}
+
                         <Input
+                            defaultValue=""
+                            label="Email"
+                            type="email"
+                            autoComplete="email"
+                            variant="bordered"
+                            {...register("email")}
+                            isInvalid={!!errors.email}
+                            errorMessage={errors.email?.message}
+                        />
+
+                        <Input
+                            defaultValue=""
+                            label="Password"
+                            type="password"
+                            autoComplete="new-password"
+                            variant="bordered"
+                            {...register("password")}
+                            isInvalid={!!errors.password}
+                            errorMessage={errors.password?.message}
+                        />
+                        {/* <Input
                             defaultValue=''
                             label='Password'
                             name="password"
@@ -87,7 +119,7 @@ export default function RegisterFrom() {
                             {...register('password')}
                             isInvalid={!!errors.password}
                             errorMessage={errors.password?.message}
-                        />
+                        /> */}
                         <Button
                             isDisabled={!isValid}
                             fullWidth
