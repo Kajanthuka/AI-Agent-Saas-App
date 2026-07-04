@@ -4,6 +4,14 @@
 import { CheckCircle2, Circle, ListChecks, Timer } from "lucide-react";
 import { useState, useEffect } from "react";
 
+type Task = {
+    id: number;
+    title: string;
+    source: string;
+    priority: string;
+    status: "Pending" | "Completed";
+};
+
 export default function TasksPage() {
 
     const [tasks, setTasks] = useState<Task[]>([]);

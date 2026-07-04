@@ -31,21 +31,21 @@ export default function EmailPage() {
         loadEmails();
     }, []);
 
-    function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
-        setEmails((currentEmails) =>
-            currentEmails.map((email) =>
-                email.id === id ? { ...email, status } : email
-            )
-        );
-    }
+    // function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
+    //     setEmails((currentEmails) =>
+    //         currentEmails.map((email) =>
+    //             email.id === id ? { ...email, status } : email
+    //         )
+    //     );
+    // }
 
-    if (isLoading) {
-        return (
-            <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
-                <p className="text-sm text-slate-500">Loading emails...</p>
-            </main>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
+    //             <p className="text-sm text-slate-500">Loading emails...</p>
+    //         </main>
+    //     );
+    // }
 
     async function updateEmailStatus(id: number, status: "Reviewed" | "Not checked") {
         const response = await fetch(`/api/emails/${id}`, {

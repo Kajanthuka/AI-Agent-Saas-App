@@ -17,6 +17,9 @@ import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+const AppDropdownItem = DropdownItem as unknown as React.ComponentType<any>;
+
+
 export default function TopNav() {
     const router = useRouter();
     const [search, setSearch] = useState("");
@@ -117,7 +120,9 @@ export default function TopNav() {
                                 console.log(key);
                             }}
                         >
-                            <DropdownItem
+
+
+                            <AppDropdownItem
                                 key="account"
                                 as={NextLink}
                                 href="/account"
@@ -125,8 +130,10 @@ export default function TopNav() {
                                 className="py-3 text-lg font-medium"
                             >
                                 Your account
-                            </DropdownItem>
-                            <DropdownItem
+                            </AppDropdownItem>
+
+
+                            <AppDropdownItem
                                 key="preferences"
                                 as={NextLink}
                                 href="/preferences"
@@ -134,15 +141,15 @@ export default function TopNav() {
                                 className="py-3 text-lg font-medium"
                             >
                                 Preferences
-                            </DropdownItem>
+                            </AppDropdownItem>
 
-                            <DropdownItem
+                            <AppDropdownItem
                                 key="divider-1"
                                 className="pointer-events-none h-auto p-0"
                             >
                                 <Divider />
-                            </DropdownItem>
-                            <DropdownItem
+                            </AppDropdownItem>
+                            <AppDropdownItem
                                 key="security"
                                 as={NextLink}
                                 href="/security"
@@ -150,9 +157,9 @@ export default function TopNav() {
                                 className="py-3 text-lg font-medium"
                             >
                                 Security & privacy
-                            </DropdownItem>
+                            </AppDropdownItem>
 
-                            <DropdownItem
+                            <AppDropdownItem
                                 key="feedback"
                                 as={NextLink}
                                 href="/feedback"
@@ -162,16 +169,16 @@ export default function TopNav() {
                                 className="py-3 text-lg font-medium"
                             >
                                 Send feedback
-                            </DropdownItem>
+                            </AppDropdownItem>
 
-                            <DropdownItem
+                            <AppDropdownItem
                                 key="divider-2"
                                 className="pointer-events-none h-auto p-0"
                             >
                                 <Divider />
-                            </DropdownItem>
+                            </AppDropdownItem>
 
-                            <DropdownItem
+                            <AppDropdownItem
                                 key="logout"
                                 textValue="Log out"
                                 color="danger"
@@ -180,7 +187,7 @@ export default function TopNav() {
                                 onPress={handleLogout}
                             >
                                 Log out
-                            </DropdownItem>
+                            </AppDropdownItem>
 
                         </DropdownMenu>
                     </Dropdown>
