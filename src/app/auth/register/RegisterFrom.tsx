@@ -55,16 +55,6 @@ export default function RegisterFrom() {
                     <div className='space-y-4'>
 
 
-                        {/* <Input
-                            defaultValue=''
-                            label='Name'
-                            name="name"
-                            autoComplete="name"
-                            variant='bordered'
-                            {...register('name')}
-                            isInvalid={!!errors.name}
-                            errorMessage={errors.name?.message}
-                        /> */}
 
                         <Input
                             defaultValue=""
@@ -76,17 +66,7 @@ export default function RegisterFrom() {
                             errorMessage={errors.name?.message}
                         />
 
-                        {/* <Input
-                            defaultValue=''
-                            label='Email'
-                            name="email"
-                            type="email"
-                            autoComplete="email"
-                            variant='bordered'
-                            {...register('email')}
-                            isInvalid={!!errors.email}
-                            errorMessage={errors.email?.message}
-                        /> */}
+
 
                         <Input
                             defaultValue=""
@@ -109,17 +89,7 @@ export default function RegisterFrom() {
                             isInvalid={!!errors.password}
                             errorMessage={errors.password?.message}
                         />
-                        {/* <Input
-                            defaultValue=''
-                            label='Password'
-                            name="password"
-                            type="password"
-                            autoComplete="new-password"
-                            variant='bordered'
-                            {...register('password')}
-                            isInvalid={!!errors.password}
-                            errorMessage={errors.password?.message}
-                        /> */}
+
                         <Button
                             isDisabled={!isValid}
                             fullWidth
