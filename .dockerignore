@@ -1,0 +1,32 @@
+<!-- node_modules
+.next
+.env.local
+.git
+README.md -->
+
+# Dependencies & build output (rebuilt inside the image)
+node_modules
+.next
+out
+
+# Env files — never bake secrets into the image
+.env
+.env.*
+
+# VCS & tooling
+.git
+.gitignore
+.vscode
+.idea
+
+# Docker & docs (not needed at build time)
+Dockerfile
+.dockerignore
+README.md
+AGENTS.md
+CLAUDE.md
+
+# Logs & OS cruft
+npm-debug.log*
+*.local
+.DS_Store

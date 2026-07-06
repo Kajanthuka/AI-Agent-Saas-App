@@ -38,7 +38,19 @@ export async function GET(request: Request) {
         ]
     );
 
-    const syncUrl = new URL("/api/gmail/sync", request.url);
+    // const syncUrl = new URL("/api/gmail/sync", request.url);
+
+    // const appUrl =
+    //     process.env.NEXT_PUBLIC_APP_URL ??
+    //     "https://taskpilot-ai-725285196821.europe-west2.run.app";
+
+    const appUrl =
+        process.env.NEXT_PUBLIC_APP_URL ||
+        "https://taskpilot-ai-725285196821.europe-west2.run.app";
+
+    const syncUrl = new URL("/api/gmail/sync", appUrl);
+
+
     let synced = 0;
 
     try {
@@ -54,7 +66,13 @@ export async function GET(request: Request) {
         console.error("Gmail sync after connect failed:", error);
     }
 
-    const dashboardUrl = new URL("/dashboard", request.url);
+    // const dashboardUrl = new URL("/dashboard", request.url);
+
+    // dashboardUrl.searchParams.set("gmailConnected", "true");
+    // dashboardUrl.searchParams.set("synced", String(synced));
+
+    const dashboardUrl = new URL("/dashboard", appUrl);
+
     dashboardUrl.searchParams.set("gmailConnected", "true");
     dashboardUrl.searchParams.set("synced", String(synced));
 
