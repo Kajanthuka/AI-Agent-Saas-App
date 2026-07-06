@@ -1,10 +1,3 @@
-// 'use client';
-// import { redirect } from "next/navigation";
-
-// export default function Home() {
-//   redirect("/auth/login");
-// }
-
 import Link from "next/link";
 import { Bot, CheckCircle, Inbox, ListChecks, MailCheck } from "lucide-react";
 
