@@ -5,7 +5,13 @@ TaskPilot AI is an AI-powered email productivity web application that helps user
 
 The app connects with Gmail, fetches recent inbox emails, stores them in PostgreSQL, uses AI to generate professional email replies and task suggestions, and allows users to send reviewed AI-generated replies through Gmail.
 
+## Live Demo
+
+https://taskpilot-ai.com
+
+
 ## Features
+
 
 - User registration and login
 - Protected app pages
@@ -13,7 +19,7 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 - Gmail inbox email sync
 - Daily updated email fetching
 - AI-generated email replies
-- AI-generated tasks 
+- AI-generated tasks
 - Regenerate AI replies
 - Copy AI replies
 - Send AI-generated replies through Gmail API
@@ -30,7 +36,10 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 - Search page
 - Responsive top navigation
 - Responsive side navigation
+- Public landing page
 - Clean login and register pages
+
+
 
 ## Tech Stack
 
@@ -44,10 +53,13 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 - pg
 - Gmail API
 - Google OAuth
-- Gemini AI API
+- Gemini / Google AI
 - bcryptjs
 - React Hook Form
 - Zod
+- Google Cloud Run
+- Neon PostgreSQL
+
 
 ## Getting Started 
 1. Clone the repository
@@ -63,10 +75,12 @@ The app connects with Gmail, fetches recent inbox emails, stores them in Postgre
 
   Create a .env.local file in the project root.
 ```txt
+
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/taskpilotai
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URI=http://localhost:3000/api/auth/google/callback
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 GEMINI_API_KEY=your_gemini_api_key
 CRON_SECRET=your_secret_key
 
@@ -99,6 +113,8 @@ src
 │   ├── preferences
 │   ├── security
 │   ├── feedback
+│   ├── privacy
+│   ├── terms
 │   └── search
 ├── components
 │   ├── navbar
@@ -168,8 +184,12 @@ Example Gmail sync query:
 
  - in:inbox newer_than:1d
 
-For sending emails, the app requires Gmail send permission:
+
+Required Gmail permissions:
+
+https://www.googleapis.com/auth/gmail.readonly
 https://www.googleapis.com/auth/gmail.send
+
 
 ## AI Reply Generation and Gmail Sending
 
@@ -202,15 +222,38 @@ Connect Gmail
 → Create tasks from email context
 ```
 
+# Deployment
+
+The app is deployed on Google Cloud Run with:
+
+- Custom domain: https://taskpilot-ai.com
+- PostgreSQL database hosted on Neon
+- Secrets managed with Google Secret Manager
+- Google OAuth configured for Gmail access
+
+# Production environment variables include:
+```
+DATABASE_URL=your_production_database_url
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=https://taskpilot-ai.com/api/auth/google/callback
+NEXT_PUBLIC_APP_URL=https://taskpilot-ai.com
+CRON_SECRET=your_secret_key
+```
+
+
 
 # Future Improvements
-- AWS deployment
-- Scheduled email sync
-- Improve Gmail reply threading and sent email tracking
+
+- Scheduled background email sync
+- Improved Gmail reply threading
+- Sent email tracking improvements
 - Role-based workspace members
 - Improved AI task extraction
 - Notification system
 - Production monitoring
+- Team workspace billing
+
 
 
 # Author
