@@ -3,14 +3,13 @@ import "./globals.css";
 import Providers from "@/components/Providers";
 import AppShell from "@/components/AppShell";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "TaskPilot AI",
-  description:
-    "AI-powered Gmail productivity app for managing emails, generating AI replies, creating tasks, and sending user-approved replies.",
+  description: "AI-powered Gmail productivity app",
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/icon.png",
+    icon: "/icon.png?v=3",
+    shortcut: "/favicon.ico?v=3",
+    apple: "/icon.png?v=3",
   },
 };
 
