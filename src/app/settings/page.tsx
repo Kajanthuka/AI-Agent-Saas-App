@@ -11,6 +11,7 @@ import {
     User,
 } from "lucide-react";
 import type { ElementType } from "react";
+import Link from "next/link";
 
 export default function SettingsPage() {
     return (
@@ -22,6 +23,13 @@ export default function SettingsPage() {
                         Manage your workspace, account, notifications, and AI preferences.
                     </p>
                 </div>
+
+                <Link
+                    href="/settings/email-health"
+                    className="inline-flex h-11 items-center justify-center rounded-xl bg-emerald-700 px-5 font-medium text-white hover:bg-emerald-800"
+                >
+                    Email Health
+                </Link>
 
                 <section className="grid gap-6 xl:grid-cols-2">
                     <SettingsCard title="Profile Settings" icon={User}>
@@ -111,6 +119,8 @@ export default function SettingsPage() {
                         />
                     </div>
                 </section>
+
+
 
                 <div className="flex justify-end">
                     <button
