@@ -1,77 +1,3 @@
-// "use client";
-
-// import { useRouter } from "next/navigation";
-// import { useState } from "react";
-
-// export default function AdminLoginForm() {
-//     const router = useRouter();
-//     const [email, setEmail] = useState("");
-//     const [password, setPassword] = useState("");
-
-//     async function handleSubmit(event: React.FormEvent) {
-//         event.preventDefault();
-
-//         const response = await fetch("/api/auth/login", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({
-//                 email,
-//                 password,
-//                 requiredRole: "admin",
-//             }),
-//         });
-
-//         const data = await response.json();
-
-//         if (!response.ok) {
-//             alert(data.error ?? "Admin login failed");
-//             return;
-//         }
-
-//         router.push("/members");
-//         router.refresh();
-//     }
-
-//     return (
-//         <form
-//             onSubmit={handleSubmit}
-//             className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
-//         >
-//             <h1 className="text-2xl font-bold text-slate-950">Admin Login</h1>
-//             <p className="mt-2 text-sm text-slate-500">
-//                 Login with an admin account to manage TaskPilot AI.
-//             </p>
-
-//             <div className="mt-6 space-y-4">
-//                 <input
-//                     className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-600"
-//                     placeholder="Admin email"
-//                     type="email"
-//                     value={email}
-//                     onChange={(event) => setEmail(event.target.value)}
-//                 />
-
-//                 <input
-//                     className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-600"
-//                     placeholder="Password"
-//                     type="password"
-//                     value={password}
-//                     onChange={(event) => setPassword(event.target.value)}
-//                 />
-
-//                 <button
-//                     type="submit"
-//                     className="w-full rounded-xl bg-emerald-700 px-4 py-3 font-semibold text-white hover:bg-emerald-800"
-//                 >
-//                     Login as Admin
-//                 </button>
-//             </div>
-//         </form>
-//     );
-// }
-
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
@@ -147,16 +73,7 @@ export default function AdminLoginForm() {
                     isInvalid={!!errors.email}
                     errorMessage={errors.email?.message as string}
                 />
-                {/* 
-                <Input
-                    label="Password"
-                    type="password"
-                    variant="bordered"
-                    autoComplete="current-password"
-                    {...register("password")}
-                    isInvalid={!!errors.password}
-                    errorMessage={errors.password?.message as string}
-                /> */}
+
 
                 <Input
                     defaultValue=""

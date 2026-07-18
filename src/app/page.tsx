@@ -1,9 +1,3 @@
-// import Link from "next/link";
-// import { Bot, CheckCircle, Inbox, ListChecks, MailCheck } from "lucide-react";
-import AdminLogin from "./auth/admin-login";
-import UserLogin from "./auth/user-login";
-import Register from "./auth/register";
-
 
 import Link from "next/link";
 import { ChevronDown, ShieldCheck, UserRound, UserPlus, Bot, CheckCircle, Inbox, ListChecks, MailCheck } from "lucide-react";
@@ -21,25 +15,6 @@ export default function HomePage() {
               TaskPilot AI
             </span>
           </div>
-
-          {/* <div className="flex items-center gap-3">
-            {/* <Link
-              href="/auth/login"
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white"
-            >
-              Login
-            </Link>
-            <Link
-              href="/auth/register"
-              className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
-            >
-              Register
-            </Link> */}
-
-          {/* <Link href="/auth/login">User Login</Link>
-            <Link href="/auth/admin/login">Admin Login</Link>
-            <Link href="/auth/register">Register</Link>
-          </div>  */}
 
           <div className="flex items-center gap-3">
             <div className="group relative">
@@ -69,7 +44,6 @@ export default function HomePage() {
                   <span className="font-medium">Admin Login</span>
                 </Link>
 
-                {/* <Link href="/auth/admin-login">Admin Login</Link> */}
               </div>
             </div>
 

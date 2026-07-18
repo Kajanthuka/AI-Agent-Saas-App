@@ -11,7 +11,7 @@ export default function AdminLoginPage() {
                 AI
               </div>
 
-              <h1 className="text-5xl font-bold">
+              <h1 className="text-2xl font-bold">
                 TaskPilot AI Admin
               </h1>
 
