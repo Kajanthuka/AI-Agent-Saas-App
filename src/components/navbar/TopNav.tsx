@@ -40,7 +40,7 @@ export default function TopNav() {
             method: "POST",
         });
 
-        window.location.href = "/auth/login";
+        window.location.href = "/";
     };
     return (
         <div className="min-h-0 bg-gray-50 px-4 py-2 lg:px-1">

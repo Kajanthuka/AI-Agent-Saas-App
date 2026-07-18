@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react'
+// import React from 'react'
 import { Card, CardHeader, CardBody, Input, Button } from '@nextui-org/react';
 import { GiPadlock } from 'react-icons/gi';
 import { useForm } from 'react-hook-form';
@@ -8,9 +8,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema, loginSchema } from '@/lib/schemas/loginSchema';
 import { useRouter } from "next/navigation";
 
-
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 export default function LoginForm() {
     const router = useRouter();
+
+    const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors, isValid } } = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         mode: 'onTouched'
@@ -25,6 +28,7 @@ export default function LoginForm() {
             },
             body: JSON.stringify(data),
         });
+
 
         const result = await response.json();
 
@@ -63,7 +67,28 @@ export default function LoginForm() {
                             isInvalid={!!errors.email}
                             errorMessage={errors.email?.message as string}
                         />
-                        <Input
+
+                        {/* <Input
+                            defaultValue=""
+                            label="Password"
+                            type={showPassword ? "text" : "password"}
+                            variant="bordered"
+                            {...register("password")}
+                            isInvalid={!!errors.password}
+                            errorMessage={errors.password?.message as string}
+                            endContent={
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((current) => !current)}
+                                    className="text-slate-500 hover:text-emerald-700"
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            }
+                        /> */}
+
+                        {/* <Input
                             defaultValue=''
                             label='Password'
                             type='password'
@@ -72,6 +97,46 @@ export default function LoginForm() {
                             {...register('password')}
                             isInvalid={!!errors.password}
                             errorMessage={errors.password?.message as string}
+                        /> */}
+
+                        {/* <Input
+                            defaultValue=""
+                            label="Password"
+                            type={showPassword ? "text" : "password"}
+                            variant="bordered"
+                            {...register("password")}
+                            isInvalid={!!errors.password}
+                            errorMessage={errors.password?.message as string}
+                            endContent={
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((current) => !current)}
+                                    className="text-slate-500 hover:text-emerald-700"
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            }
+                        /> */}
+
+                        <Input
+                            defaultValue=""
+                            label="Password"
+                            type={showPassword ? "text" : "password"}
+                            variant="bordered"
+                            {...register("password")}
+                            isInvalid={!!errors.password}
+                            errorMessage={errors.password?.message as string}
+                            endContent={
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((current) => !current)}
+                                    className="text-slate-500 hover:text-emerald-700"
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            }
                         />
                         <Button
                             isDisabled={!isValid}

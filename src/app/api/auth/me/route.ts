@@ -1,12 +1,61 @@
+// import { NextResponse } from "next/server";
+// import { getCurrentUser } from "@/lib/auth";
+
+// export async function GET() {
+//     const user = await getCurrentUser();
+
+//     const result = await pool.query(
+//         "SELECT id, name, email, role FROM users WHERE id = $1",
+//         [session.user_id]
+//     );
+
+//     if (!user) {
+//         return NextResponse.json({ user: null }, { status: 401 });
+//     }
+
+//     // return NextResponse.json({ user });
+//     return NextResponse.json({
+//         user: result.rows[0],
+//     });
+// }
+
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
+import { pool } from "@/lib/db";
 
 export async function GET() {
-    const user = await getCurrentUser();
+    try {
+        const cookieStore = await cookies();
+        const sessionToken = cookieStore.get("session_token")?.value;
 
-    if (!user) {
-        return NextResponse.json({ user: null }, { status: 401 });
+        if (!sessionToken) {
+            return NextResponse.json({ user: null });
+        }
+
+        const sessionResult = await pool.query(
+            `
+      SELECT users.id, users.name, users.email, users.role
+      FROM sessions
+      JOIN users ON users.id = sessions.user_id
+      WHERE sessions.token = $1
+      LIMIT 1
+      `,
+            [sessionToken]
+        );
+
+        if (sessionResult.rows.length === 0) {
+            return NextResponse.json({ user: null });
+        }
+
+        return NextResponse.json({
+            user: sessionResult.rows[0],
+        });
+    } catch (error) {
+        console.error("Auth me error:", error);
+
+        return NextResponse.json(
+            { user: null, error: "Failed to check logged in user" },
+            { status: 500 }
+        );
     }
-
-    return NextResponse.json({ user });
 }

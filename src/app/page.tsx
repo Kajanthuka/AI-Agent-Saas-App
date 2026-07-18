@@ -1,5 +1,12 @@
+// import Link from "next/link";
+// import { Bot, CheckCircle, Inbox, ListChecks, MailCheck } from "lucide-react";
+import AdminLogin from "./auth/admin-login";
+import UserLogin from "./auth/user-login";
+import Register from "./auth/register";
+
+
 import Link from "next/link";
-import { Bot, CheckCircle, Inbox, ListChecks, MailCheck } from "lucide-react";
+import { ChevronDown, ShieldCheck, UserRound, UserPlus, Bot, CheckCircle, Inbox, ListChecks, MailCheck } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -15,8 +22,8 @@ export default function HomePage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link
+          {/* <div className="flex items-center gap-3">
+            {/* <Link
               href="/auth/login"
               className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-white"
             >
@@ -27,8 +34,54 @@ export default function HomePage() {
               className="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800"
             >
               Register
+            </Link> */}
+
+          {/* <Link href="/auth/login">User Login</Link>
+            <Link href="/auth/admin/login">Admin Login</Link>
+            <Link href="/auth/register">Register</Link>
+          </div>  */}
+
+          <div className="flex items-center gap-3">
+            <div className="group relative">
+              <button
+                type="button"
+                className="inline-flex h-12 items-center gap-2 rounded-xl bg-emerald-700 px-5 text-base font-semibold text-white shadow-sm transition hover:bg-emerald-800"
+              >
+                Login
+                <ChevronDown size={18} />
+              </button>
+
+              <div className="invisible absolute right-0 top-14 z-50 w-56 rounded-2xl border border-slate-200 bg-white p-2 opacity-0 shadow-xl transition group-hover:visible group-hover:opacity-100">
+                <Link
+                  href="/auth/login"
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                >
+                  <UserRound size={20} />
+                  <span className="font-medium">User Login</span>
+                </Link>
+
+                <Link
+                  href="/auth/admin/login"
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-slate-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                >
+
+                  <ShieldCheck size={20} />
+                  <span className="font-medium">Admin Login</span>
+                </Link>
+
+                {/* <Link href="/auth/admin-login">Admin Login</Link> */}
+              </div>
+            </div>
+
+            <Link
+              href="/auth/register"
+              className="inline-flex h-12 items-center gap-2 rounded-xl border border-emerald-700 px-5 text-base font-semibold text-emerald-700 transition hover:bg-emerald-50"
+            >
+              <UserPlus size={20} />
+              Register
             </Link>
           </div>
+
         </header>
 
         <div className="grid flex-1 items-center gap-10 py-16 lg:grid-cols-[1.1fr_0.9fr]">
