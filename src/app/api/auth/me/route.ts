@@ -1,24 +1,3 @@
-// import { NextResponse } from "next/server";
-// import { getCurrentUser } from "@/lib/auth";
-
-// export async function GET() {
-//     const user = await getCurrentUser();
-
-//     const result = await pool.query(
-//         "SELECT id, name, email, role FROM users WHERE id = $1",
-//         [session.user_id]
-//     );
-
-//     if (!user) {
-//         return NextResponse.json({ user: null }, { status: 401 });
-//     }
-
-//     // return NextResponse.json({ user });
-//     return NextResponse.json({
-//         user: result.rows[0],
-//     });
-// }
-
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
