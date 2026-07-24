@@ -16,7 +16,6 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
             const data = await response.json();
 
             if (!data.user || data.user.role !== "admin") {
-                // router.replace("/auth/admin/login");
                 router.replace("/auth/admin/login");
                 return;
             }
