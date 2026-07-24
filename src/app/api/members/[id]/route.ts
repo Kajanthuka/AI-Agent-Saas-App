@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
 
@@ -5,8 +6,41 @@ type Params = {
     params: Promise<{ id: string }>;
 };
 
+async function requireAdmin() {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("session_token")?.value;
+
+    if (!token) return null;
+
+    const result = await pool.query(
+        `
+        SELECT users.id, users.name, users.email, users.role
+        FROM sessions
+        JOIN users ON users.id = sessions.user_id
+        WHERE sessions.token = $1
+        AND sessions.expires_at > NOW()
+        `,
+        [token]
+    );
+
+    const user = result.rows[0];
+
+    if (!user || user.role !== "admin") return null;
+
+    return user;
+}
+
 export async function PATCH(request: Request, { params }: Params) {
     try {
+        const admin = await requireAdmin();
+
+        if (!admin) {
+            return NextResponse.json(
+                { error: "Admin access required" },
+                { status: 403 }
+            );
+        }
+
         const { id } = await params;
         const { name, email, role, status } = await request.json();
 
@@ -42,6 +76,15 @@ export async function PATCH(request: Request, { params }: Params) {
 
 export async function DELETE(_request: Request, { params }: Params) {
     try {
+        const admin = await requireAdmin();
+
+        if (!admin) {
+            return NextResponse.json(
+                { error: "Admin access required" },
+                { status: 403 }
+            );
+        }
+
         const { id } = await params;
 
         await pool.query("DELETE FROM members WHERE id = $1", [id]);

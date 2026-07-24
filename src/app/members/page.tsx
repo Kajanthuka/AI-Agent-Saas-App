@@ -1,5 +1,6 @@
 "use client";
 
+import AdminGuard from "@/components/AdminGuard";
 import { useEffect, useState } from "react";
 import { MailPlus, ShieldCheck, UserCheck, Users } from "lucide-react";
 
@@ -77,8 +78,9 @@ export default function MembersPage() {
     }).length;
 
     return (
-        <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
-            <div className="mx-auto max-w-7xl space-y-6">
+        <AdminGuard>
+            <main className="min-h-screen bg-gray-50 px-4 py-6 lg:px-8">
+                <div className="mx-auto max-w-7xl space-y-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-950">
@@ -163,8 +165,9 @@ export default function MembersPage() {
                         </div>
                     )}
                 </section>
-            </div>
-        </main>
+                </div>
+            </main>
+        </AdminGuard>
     );
 }
 
