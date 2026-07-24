@@ -15,8 +15,14 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
 
             const data = await response.json();
 
-            if (!data.user || data.user.role !== "admin") {
-                router.replace("/auth/admin/login");
+            if (!response.ok || !data.user) {
+                router.replace("/auth/login");
+                return;
+            }
+
+            if (data.user.role !== "admin") {
+                window.alert("Sorry, only admins can access this area.");
+                router.replace("/dashboard");
                 return;
             }
 

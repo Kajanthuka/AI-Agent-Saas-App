@@ -17,12 +17,13 @@ const navItems = [
     { label: "Emails", href: "/email", icon: Inbox },
     { label: "Tasks", href: "/tasks", icon: ListChecks },
     { label: "AI Replies", href: "/replies", icon: Bot },
-    { label: "Settings", href: "/settings", icon: Settings },
+    { label: "Settings", href: "/settings", icon: Settings, adminOnly: true },
 ];
 
 export default function SideNav() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+    const [userRole, setUserRole] = useState<string | null>(null);
 
     useEffect(() => {
         function handleEscape(event: KeyboardEvent) {
@@ -36,6 +37,26 @@ export default function SideNav() {
         return () => {
             window.removeEventListener("keydown", handleEscape);
         };
+    }, []);
+
+    useEffect(() => {
+        async function loadCurrentUser() {
+            try {
+                const response = await fetch("/api/auth/me", {
+                    cache: "no-store",
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.user) {
+                    setUserRole(data.user.role);
+                }
+            } catch (error) {
+                console.error("Load current user error:", error);
+            }
+        }
+
+        loadCurrentUser();
     }, []);
 
 
@@ -98,7 +119,9 @@ export default function SideNav() {
                 </div>
 
                 <nav className="mt-1 space-y-3">
-                    {navItems.map((item) => {
+                    {navItems
+                        .filter((item) => !item.adminOnly || userRole === "admin")
+                        .map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname === item.href;
 
