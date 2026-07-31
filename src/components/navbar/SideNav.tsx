@@ -10,14 +10,16 @@ import {
     LayoutDashboard,
     ListChecks,
     Settings,
+    ShieldCheck,
 } from "lucide-react";
 
 const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { label: "Admin", href: "/admin/dashboard", icon: ShieldCheck, adminOnly: true },
     { label: "Emails", href: "/email", icon: Inbox },
     { label: "Tasks", href: "/tasks", icon: ListChecks },
     { label: "AI Replies", href: "/replies", icon: Bot },
-    { label: "Settings", href: "/settings", icon: Settings, adminOnly: true },
+    { label: "Settings", href: "/settings", icon: Settings },
 ];
 
 export default function SideNav() {

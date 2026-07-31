@@ -9,12 +9,12 @@ import { Button, Divider } from '@nextui-org/react';
 import NextLink from "next/link";
 import { Bot } from "lucide-react";
 import {
-    SlidersHorizontal, Shield,
+    SlidersHorizontal, Shield, ShieldCheck,
     MessageCircle,
     LogOut, Bell, User, Search
 } from "lucide-react";
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const AppDropdownItem = DropdownItem as unknown as React.ComponentType<any>;
@@ -24,6 +24,27 @@ export default function TopNav() {
     const router = useRouter();
     const [search, setSearch] = useState("");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [userRole, setUserRole] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function loadCurrentUser() {
+            try {
+                const response = await fetch("/api/auth/me", {
+                    cache: "no-store",
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.user) {
+                    setUserRole(data.user.role);
+                }
+            } catch (error) {
+                console.error("Load current user error:", error);
+            }
+        }
+
+        loadCurrentUser();
+    }, []);
 
     function handleSearch() {
         const query = search.trim();
@@ -121,6 +142,17 @@ export default function TopNav() {
                             }}
                         >
 
+                            {userRole === "admin" ? (
+                                <AppDropdownItem
+                                    key="admin-dashboard"
+                                    as={NextLink}
+                                    href="/admin/dashboard"
+                                    startContent={<ShieldCheck size={22} className="text-emerald-700" />}
+                                    className="py-3 text-lg font-medium"
+                                >
+                                    Admin dashboard
+                                </AppDropdownItem>
+                            ) : null}
 
                             <AppDropdownItem
                                 key="account"
