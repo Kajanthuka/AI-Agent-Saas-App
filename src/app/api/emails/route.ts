@@ -1,5 +1,114 @@
+// import { NextResponse } from "next/server";
+// import { pool } from "@/lib/db";
+// import {
+//     detectUrgency,
+//     generateSuggestedReply,
+//     generateTaskTitle,
+// } from "@/lib/email-ai";
+
+// export async function GET() {
+//     const result = await pool.query(`
+//     SELECT
+//       id,
+//       sender AS "from",
+//       subject,
+//       message AS preview,
+//       urgency,
+//       status,
+//       received_at AS "receivedAt",
+//       created_at AS "createdAt"
+//     FROM emails
+//     ORDER BY received_at DESC NULLS LAST, created_at DESC
+//   `);
+
+//     return NextResponse.json(result.rows);
+// }
+// export async function POST(request: Request) {
+//     const body = await request.json();
+
+//     const urgency = detectUrgency(`${body.subject} ${body.message}`);
+//     const client = await pool.connect();
+
+//     try {
+//         await client.query("BEGIN");
+
+//         const emailResult = await client.query(
+//             `
+//       INSERT INTO emails (sender, subject, message, urgency, status)
+//       VALUES ($1, $2, $3, $4, $5)
+//       RETURNING *
+//       `,
+//             [
+//                 body.from,
+//                 body.subject,
+//                 body.message,
+//                 urgency,
+//                 body.status ?? "Not checked",
+//             ]
+//         );
+
+//         const email = emailResult.rows[0];
+
+//         const replyText = generateSuggestedReply({
+//             sender: email.sender,
+//             subject: email.subject,
+//             message: email.message,
+//         });
+
+//         const replyResult = await client.query(
+//             `
+//   INSERT INTO ai_replies (email_id, title, recipient, source, preview, status)
+//   VALUES ($1, $2, $3, $4, $5, $6)
+//   RETURNING *
+//   `,
+//             [
+//                 email.id,
+//                 `Reply to ${email.sender}`,
+//                 email.sender,
+//                 email.subject,
+//                 replyText,
+//                 "Draft",
+//             ]
+//         );
+
+//         const taskResult = await client.query(
+//             `
+//   INSERT INTO tasks (email_id, title, source, priority, status)
+//   VALUES ($1, $2, $3, $4, $5)
+//   RETURNING *
+//   `,
+//             [
+//                 email.id,
+//                 generateTaskTitle({
+//                     sender: email.sender,
+//                     subject: email.subject,
+//                     message: email.message,
+//                 }),
+//                 `${email.sender} email`,
+//                 urgency,
+//                 "Pending",
+//             ]
+//         );
+
+//         await client.query("COMMIT");
+
+//         return NextResponse.json({
+//             email,
+//             aiReply: replyResult.rows[0],
+//             task: taskResult.rows[0],
+//         });
+
+//     } catch (error) {
+//         await client.query("ROLLBACK");
+//         console.error("Gmail sync insert error:", error);
+//     } finally {
+//         client.release();
+//     }
+// }
+
 import { NextResponse } from "next/server";
 import { pool } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth";
 import {
     detectUrgency,
     generateSuggestedReply,
@@ -7,23 +116,40 @@ import {
 } from "@/lib/email-ai";
 
 export async function GET() {
-    const result = await pool.query(`
-    SELECT
-      id,
-      sender AS "from",
-      subject,
-      message AS preview,
-      urgency,
-      status,
-      received_at AS "receivedAt",
-      created_at AS "createdAt"
-    FROM emails
-    ORDER BY received_at DESC NULLS LAST, created_at DESC
-  `);
+    const user = await getCurrentUser();
+
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const result = await pool.query(
+        `
+        SELECT
+          id,
+          sender AS "from",
+          subject,
+          message AS preview,
+          urgency,
+          status,
+          received_at AS "receivedAt",
+          created_at AS "createdAt"
+        FROM emails
+        WHERE user_id = $1
+        ORDER BY received_at DESC NULLS LAST, created_at DESC
+        `,
+        [user.id]
+    );
 
     return NextResponse.json(result.rows);
 }
+
 export async function POST(request: Request) {
+    const user = await getCurrentUser();
+
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
 
     const urgency = detectUrgency(`${body.subject} ${body.message}`);
@@ -34,11 +160,19 @@ export async function POST(request: Request) {
 
         const emailResult = await client.query(
             `
-      INSERT INTO emails (sender, subject, message, urgency, status)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING *
-      `,
+            INSERT INTO emails (
+                user_id,
+                sender,
+                subject,
+                message,
+                urgency,
+                status
+            )
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+            `,
             [
+                user.id,
                 body.from,
                 body.subject,
                 body.message,
@@ -57,11 +191,20 @@ export async function POST(request: Request) {
 
         const replyResult = await client.query(
             `
-  INSERT INTO ai_replies (email_id, title, recipient, source, preview, status)
-  VALUES ($1, $2, $3, $4, $5, $6)
-  RETURNING *
-  `,
+            INSERT INTO ai_replies (
+                user_id,
+                email_id,
+                title,
+                recipient,
+                source,
+                preview,
+                status
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING *
+            `,
             [
+                user.id,
                 email.id,
                 `Reply to ${email.sender}`,
                 email.sender,
@@ -73,11 +216,19 @@ export async function POST(request: Request) {
 
         const taskResult = await client.query(
             `
-  INSERT INTO tasks (email_id, title, source, priority, status)
-  VALUES ($1, $2, $3, $4, $5)
-  RETURNING *
-  `,
+            INSERT INTO tasks (
+                user_id,
+                email_id,
+                title,
+                source,
+                priority,
+                status
+            )
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+            `,
             [
+                user.id,
                 email.id,
                 generateTaskTitle({
                     sender: email.sender,
@@ -97,11 +248,16 @@ export async function POST(request: Request) {
             aiReply: replyResult.rows[0],
             task: taskResult.rows[0],
         });
-
     } catch (error) {
         await client.query("ROLLBACK");
-        console.error("Gmail sync insert error:", error);
+        console.error("Email insert error:", error);
+
+        return NextResponse.json(
+            { error: "Failed to create email" },
+            { status: 500 }
+        );
     } finally {
         client.release();
     }
 }
+
