@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import AppShell from "@/components/AppShell";
+// import CourseChatbot from "@/components/CourseChatbot";
 
 export const metadata = {
   title: "TaskPilot AI",
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <Providers>
           <AppShell>{children}</AppShell>
+          {/* <CourseChatbot /> */}
         </Providers>
       </body>
     </html>

@@ -5,7 +5,7 @@ import TopNav from "@/components/navbar/TopNav";
 import SideNav from "@/components/navbar/SideNav";
 import Footer from "@/components/footer/Footer";
 import AuthGuard from "@/components/AuthGuard";
-
+import CourseChatbot from "@/components/CourseChatbot";
 export default function AppShell({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
 
@@ -32,6 +32,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <Footer />
+                <CourseChatbot />
             </div>
         </AuthGuard>
     );

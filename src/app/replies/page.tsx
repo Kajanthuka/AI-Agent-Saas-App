@@ -1,6 +1,7 @@
 "use client";
 
 import { Bot, CheckCircle2, Copy, RefreshCw, Send } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Reply = {
@@ -12,12 +13,18 @@ type Reply = {
     status: "Draft" | "Ready" | "Sent";
 };
 export default function RepliesPage() {
+    const searchParams = useSearchParams();
     const [replies, setReplies] = useState<Reply[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const courseOnly = searchParams.get("courseOnly") === "true";
 
     useEffect(() => {
         async function loadReplies() {
-            const response = await fetch("/api/replies");
+            setIsLoading(true);
+
+            const response = await fetch(
+                courseOnly ? "/api/replies?courseOnly=true" : "/api/replies"
+            );
             const data = await response.json();
 
             setReplies(data);
@@ -25,7 +32,7 @@ export default function RepliesPage() {
         }
 
         loadReplies();
-    }, []);
+    }, [courseOnly]);
 
     async function copyReply(text: string) {
         if (navigator.clipboard && window.isSecureContext) {
@@ -121,7 +128,9 @@ export default function RepliesPage() {
                 <div>
                     <h1 className="text-2xl font-bold text-slate-950">AI Replies</h1>
                     <p className="mt-1 text-sm text-slate-500">
-                        Review, regenerate, copy, and send AI suggested replies.
+                        {courseOnly
+                            ? "Review course-related AI reply drafts from Email Bot."
+                            : "Review, regenerate, copy, and send AI suggested replies."}
                     </p>
                 </div>
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import { Eye, EyeOff, LockKeyhole, Mail, Sparkles } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -11,6 +11,7 @@ import { LoginSchema, loginSchema } from "@/lib/schemas/loginSchema";
 
 export default function LoginForm() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [showPassword, setShowPassword] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,7 +43,9 @@ export default function LoginForm() {
                 return;
             }
 
-            router.push("/dashboard");
+            const nextPath = searchParams.get("next");
+
+            router.push(nextPath?.startsWith("/") ? nextPath : "/dashboard");
             router.refresh();
         } finally {
             setIsSubmitting(false);
